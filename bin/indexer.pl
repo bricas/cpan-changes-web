@@ -5,12 +5,13 @@ use warnings;
 
 use lib 'lib';
 
+require 'bin/_validate.pl';
+
 use CPAN::Changes::Web;
 use Dancer ':script';
 use CPAN::Changes;
 use CPAN::Mini::Visit;
 use CPAN::DistnameInfo;
-use Try::Tiny;
 use Getopt::Long;
 
 GetOptions(
@@ -26,6 +27,9 @@ my $scan = $schema->resultset( 'Scan' )->first;
 if ( !$scan || !$resume ) {
     $scan = $schema->resultset( 'Scan' )
         ->create( { cpan_changes_version => $CPAN::Changes::VERSION } );
+}
+else {
+    $scan->update( { cpan_changes_version => $CPAN::Changes::VERSION } );
 }
 
 CPAN::Mini::Visit->new(
@@ -65,49 +69,7 @@ sub parse_changelogs {
 
     $release->changes_fulltext( slurp( 'Changes' ) );
 
-    my $changes = try {
-        local $SIG{ __WARN__ } = sub { };    # ignore warnings
-        CPAN::Changes->load_string( $release->changes_fulltext );
-    }
-    catch {
-        $release->update( { failure => "Parse error: $_" } );
-        return;
-    };
-
-    return unless $changes;
-
-    my ( $latest ) = reverse( $changes->releases );
-    if ( !$latest ) {
-        $release->update(
-            { failure => 'No releases found in "Changes" file' } );
-        return;
-    }
-
-    if ( !$latest->date or $latest->date !~ m{^\d{4}-\d{2}-\d{2}} ) {
-        $release->update(
-            {   failure => sprintf
-                    'Latest changelog release date (%s) does not look like a W3CDTF',
-                $latest->date || ''
-            }
-        );
-        return;
-    }
-
-    if ( $latest->version ne $distinfo->version ) {
-        $release->update(
-            {   failure => sprintf
-                    'Version of most recent changelog (%s) does not match distribution version (%s)',
-                $latest->version, $distinfo->version
-            }
-        );
-        return;
-    }
-
-    $release->update(
-        {   changes_release_date => $latest->date,
-            changes_for_release  => $latest->serialize
-        }
-    );
+    validate_changes( $release );
 }
 
 sub slurp {
