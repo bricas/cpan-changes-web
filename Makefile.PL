@@ -18,6 +18,8 @@ WriteMakefile(
         # App requirements
         'Dancer::Plugin::DBIC' => 0,
         'DBIx::Class' => 0,
+        'Template' => 0,
+        'DBIx::Class::TimeStamp' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'CPAN-Changes-Web-*' },
