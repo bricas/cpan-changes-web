@@ -1,0 +1,6 @@
+<h2>Authors</h2>
+<ul>
+<% FOREACH id IN authors %>
+    <li><a href="<% author_uri %>/<% id %>"><% id %></a></li>
+<% END %>
+</ul>

@@ -1,0 +1,6 @@
+<h2>Distributions</h2>
+<ul>
+<% FOREACH dist IN distributions %>
+    <li><a href="<% dist_uri %>/<% dist %>"><% dist %></a></li>
+<% END %>
+</ul>
