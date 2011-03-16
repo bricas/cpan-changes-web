@@ -1,0 +1,8 @@
+<h2>Search</h2>
+
+<form name="search" action="/search" method='post'>
+    <input type="search" name="q" placeholder="Search..." /> <input type="submit" value="Search" /><br/>
+    <input type="radio" name="t" value="dist" checked="checked" /> Distributions
+    <input type="radio" name="t" value="author" /> Authors
+</form>
+

@@ -22,6 +22,7 @@
             <li><a href="<% request.base %>">Home</a></li>
             <li><a href="<% request.base %>dist">Distributions</a></li>
             <li><a href="<% request.base %>author">Authors</a></li>
+            <li><a href="<% request.base %>search">Search</a></li>
             <li><a href="http://search.cpan.org/dist/CPAN-Changes/lib/CPAN/Changes/Spec.pod">CPAN::Changes Spec</a></li>
         </ul>
         <div class=clear></div>

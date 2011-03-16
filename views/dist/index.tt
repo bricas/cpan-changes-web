@@ -1,4 +1,4 @@
-<h2>Distributions</h2>
+<h2><% title %></h2>
 
 <form name="search" action="/search" method='post'>
     <input type="search" name="q" placeholder="Search Distributions..." /> <input type="submit" value="Search" />

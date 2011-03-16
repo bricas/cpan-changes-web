@@ -90,13 +90,17 @@ get '/dist/:dist' => sub {
         };
 };
 
+get '/search' => sub {
+    template 'search/index', { title => 'Search' };
+};
+
 post '/search' => sub {
     my $search = params->{q};
 
     if ( params->{t} eq 'dist' ) {
         template 'dist/index',
             {
-            title    => 'Distributions',
+            title    => 'Search Distributions',
             dist_uri => uri_for( '/dist' ),
             distributions    => [
                 vars->{ scan }->releases(
@@ -110,7 +114,7 @@ post '/search' => sub {
     else {
         template 'author/index',
         {
-        title      => 'Authors',
+        title      => 'Search Authors',
         author_uri => uri_for( '/author' ),
         authors    => [
             vars->{ scan }->releases(
