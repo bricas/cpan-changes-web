@@ -91,9 +91,9 @@ get '/dist/:dist' => sub {
 };
 
 post '/search' => sub {
-    my $search = params->{search};
+    my $search = params->{q};
 
-    if ( params->{search_module} ) {
+    if ( params->{t} eq 'dist' ) {
         template 'dist/index',
             {
             title    => 'Distributions',

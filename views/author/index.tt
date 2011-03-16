@@ -1,7 +1,8 @@
 <h2>Authors</h2>
 
 <form name="search" action="/search" method='post'>
-    <input type="search" id="search" name="search" placeholder="Search author" />
+    <input type="search" name="q" placeholder="Search Authors..." /> <input type="submit" value="Search" />
+    <input type="hidden" name="t" value="author" />
 </form>
 
 <ul>

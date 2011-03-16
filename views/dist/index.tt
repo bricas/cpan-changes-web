@@ -1,8 +1,8 @@
 <h2>Distributions</h2>
 
 <form name="search" action="/search" method='post'>
-    <input type="search" id="search" name="search" placeholder="Search module" />
-    <input type="hidden" id="search_module" name="search_module" value="1" />
+    <input type="search" name="q" placeholder="Search Distributions..." /> <input type="submit" value="Search" />
+    <input type="hidden" name="t" value="dist" />
 </form>
 
 <ul>
