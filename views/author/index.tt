@@ -1,4 +1,9 @@
 <h2>Authors</h2>
+
+<form name="search" action="/search" method='post'>
+    <input type="search" id="search" name="search" placeholder="Search author" />
+</form>
+
 <ul>
 <% FOREACH id IN authors %>
     <li><a href="<% author_uri %>/<% id %>"><% id %></a></li>
