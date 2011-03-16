@@ -160,3 +160,14 @@ a {
     font-style: italic;
     color: red;
 }
+
+.multiplecolumns {
+    -moz-column-width: 300px;
+    -webkit-column-width: 300px;
+    -moz-column-gap: 20px;
+    -webkit-column-gap: 20px;
+    -moz-column-rule: 1px solid #ddccb5;
+    -webkit-column-rule: 1px solid #ddccb5;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+}

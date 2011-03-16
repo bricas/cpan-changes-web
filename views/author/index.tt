@@ -5,8 +5,10 @@
     <input type="hidden" name="t" value="author" />
 </form>
 
-<ul>
-<% FOREACH id IN authors %>
-    <li><a href="<% author_uri %>/<% id %>"><% id %></a></li>
-<% END %>
-</ul>
+<div class="multiplecolumns">
+    <ul>
+    <% FOREACH id IN authors %>
+        <li><a href="<% author_uri %>/<% id %>"><% id %></a></li>
+    <% END %>
+    </ul>
+</div>
