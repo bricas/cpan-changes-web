@@ -1,4 +1,9 @@
 <h2>Distributions</h2>
+
+<form name="search" action="/search" method='post'>
+    <input type="search" id="search_module" name="search_module" placeholder="Search module" />
+</form>
+
 <ul>
 <% FOREACH dist IN distributions %>
     <li><a href="<% dist_uri %>/<% dist %>"><% dist %></a></li>

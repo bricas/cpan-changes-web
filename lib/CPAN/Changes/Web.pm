@@ -90,5 +90,21 @@ get '/dist/:dist' => sub {
         };
 };
 
+post '/search' => sub {
+    my $search = params->{search_module};
+
+    template 'dist/index',
+        {
+        title    => 'Distributions',
+        dist_uri => uri_for( '/dist' ),
+        distributions    => [
+            vars->{ scan }->releases(
+                {
+                distribution => { 'like', "%$search%"}
+                }, { group_by => 'distribution', order_by => 'distribution' }
+                )->get_column( 'distribution' )->all
+        ]
+        };
+};
 
 true;
