@@ -62,7 +62,8 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key( 'id' );
-__PACKAGE__->resultset_attributes( { order_by => [ 'distribution' ] } );
+# "COLLATE NOCASE" is an SQLite-ism
+__PACKAGE__->resultset_attributes( { order_by => [ 'distribution COLLATE NOCASE' ] } );
 __PACKAGE__->add_unique_constraint(
     release_key => [ qw( distribution author version ) ], );
 
