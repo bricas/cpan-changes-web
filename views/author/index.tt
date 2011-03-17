@@ -5,8 +5,18 @@
     <input type="hidden" name="t" value="author" />
 </form>
 
+<% title = 'A' %>
+
 <ul class="multicol">
+<h3><% title %></h3>
+
 <% FOREACH id IN authors %>
+    <% first_letter = id.substr(0, 1) %>
+    <% IF title != first_letter %>
+        <h3><% first_letter %></h3>
+        <% title = first_letter %>
+    <% END %>
+
     <li><a href="<% author_uri %>/<% id %>"><% id %></a></li>
 <% END %>
 </ul>

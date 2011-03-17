@@ -5,8 +5,18 @@
     <input type="hidden" name="t" value="dist" />
 </form>
 
+<% title = 'A' %>
+
 <ul class="multicol">
+<h3><% title %></h3>
+
 <% FOREACH dist IN distributions %>
+    <% first_letter = dist.substr(0, 1) %>
+    <% IF title != first_letter %>
+        <h3><% first_letter %></h3>
+        <% title = first_letter %>
+    <% END %>
+
     <li><a href="<% dist_uri %>/<% dist %>"><% dist %></a></li>
 <% END %>
 </ul>
