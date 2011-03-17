@@ -24,6 +24,11 @@ h1 {
     text-shadow: #999 -1px -1px;
 }
 
+h3 {
+    font-family: 'Bevan', arial, serif;
+    text-shadow: #999 -1px -1px;
+}
+
 #menu {
     border-top: 1px solid #000;
     border-bottom: 1px solid #000;
