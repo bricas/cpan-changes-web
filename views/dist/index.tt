@@ -5,16 +5,18 @@
     <input type="hidden" name="t" value="dist" />
 </form>
 
-<% title = 'A' %>
-
+<% title_letter = 'A' %>
 <ul class="multicol">
-<h3><% title %></h3>
+
+<% IF title != 'Search Distributions' %>
+    <h3><% title_letter %></h3>
+<% END %>
 
 <% FOREACH dist IN distributions %>
     <% first_letter = dist.substr(0, 1) %>
-    <% IF title != first_letter %>
+    <% IF title_letter != first_letter && title != 'Search Distributions' %>
         <h3><% first_letter %></h3>
-        <% title = first_letter %>
+        <% title_letter = first_letter %>
     <% END %>
 
     <li><a href="<% dist_uri %>/<% dist %>"><% dist %></a></li>
