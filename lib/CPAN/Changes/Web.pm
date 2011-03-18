@@ -68,7 +68,7 @@ get '/dist' => sub {
         dist_uri => uri_for( '/dist' ),
         distributions    => [
             vars->{ scan }->releases(
-                {}, { group_by => 'distribution', order_by => 'distribution' }
+                {}, { group_by => 'distribution' }
                 )->get_column( 'distribution' )->all
         ]
         };

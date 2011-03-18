@@ -24,9 +24,19 @@ h1 {
     text-shadow: #999 -1px -1px;
 }
 
-h3 {
+h2 {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+h3.letter {
     font-family: 'Bevan', arial, serif;
-    text-shadow: #999 -1px -1px;
+    font-size: 24px;
+    margin: 10px 0;
+    border-top: 1px solid #c0c0c0;
+    border-bottom: 1px solid #c0c0c0;
+    padding: 5px 20px;
+    background: #f4f4f4;
 }
 
 #menu {
@@ -173,4 +183,13 @@ a {
     -webkit-column-gap: 20px;
     -moz-column-count: 3;
     -webkit-column-count: 3;
+}
+
+ul.multicol {
+    list-style-type: none;
+}
+
+.multicol li {
+    margin-bottom: 2px;
+    padding-bottom: 2px;
 }
