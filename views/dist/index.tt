@@ -1,24 +1,20 @@
-<h2>Distributions</h2>
+<h2><% title %></h2>
 
 <form name="search" action="/search" method='post'>
     <input type="search" name="q" placeholder="Search Distributions..." /> <input type="submit" value="Search" />
     <input type="hidden" name="t" value="dist" />
 </form>
 
-<% title_letter = 'A' %>
-<ul class="multicol">
-
-<% IF title != 'Search Distributions' %>
-    <h3><% title_letter %></h3>
-<% END %>
+<% letter = '' %>
 
 <% FOREACH dist IN distributions %>
-    <% first_letter = dist.substr(0, 1) %>
-    <% IF title_letter != first_letter && title != 'Search Distributions' %>
-        <h3><% first_letter %></h3>
-        <% title_letter = first_letter %>
+    <% next_letter = dist.substr(0, 1) FILTER upper %>
+    <% IF letter != next_letter %>
+<% IF letter %></ul><% END %>
+        <% letter = next_letter %>
+<h3 class=letter><% letter %></h3>
+<ul class=multicol>
     <% END %>
-
     <li><a href="<% dist_uri %>/<% dist %>"><% dist %></a></li>
 <% END %>
 </ul>
