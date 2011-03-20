@@ -1,6 +1,8 @@
 package CPAN::Changes::Web;
 use Dancer ':syntax';
 use Dancer::Plugin::DBIC;
+use Dancer::Plugin::Feed;
+use DateTime;
 
 our $VERSION = '0.1';
 
@@ -125,6 +127,34 @@ post '/search' => sub {
         ]
         };
     }
+};
+
+get '/feed/:type/:format' => sub {
+    my @elem = vars->{scan}->releases({}, 
+        { 
+        rows => 10, 
+        order_by => { -desc =>'id' }
+        })->get_column(params->{type})->all;
+        
+    my $type = params->{type} eq 'distribution' ? 'dist' : params->{type};
+
+    my @format_feed = map { { 
+        id       => "http://".time.rand()."/",
+        title    => $_,
+        content  => 'New ' . params->{type} . ': ' . $_,
+        author   => 'CPAN::Changes web',
+        link     => request->base . "$type/$_",
+        modified => DateTime->now } } @elem;
+
+    my $feed = create_feed(
+        format      => params->{format},
+        title       => 'CPAN::Changes web - ' . ucfirst(params->{type}),
+        link        => request->base,
+        description => 'The last ' . params->{type},
+        entries     => \@format_feed,
+    );
+
+    return $feed;
 };
 
 true;
