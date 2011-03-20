@@ -17,6 +17,7 @@ WriteMakefile(
         'Dancer'     => 1.3014,
         # App requirements
         'Dancer::Plugin::DBIC' => 0,
+        'Dancer::Plugin::Feed' => 0,
         'DBIx::Class' => 0,
         'Template' => 0,
         'DBIx::Class::TimeStamp' => 0,
