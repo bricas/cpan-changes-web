@@ -39,9 +39,10 @@ my $release;
 my $counter = 0;
 
 CPAN::Mini::Visit->new(
-    minicpan => $minicpan || undef,
-    callback => \&parse_changelogs,
-    skip     => \&skip_existing,
+    minicpan   => $minicpan || undef,
+    callback   => \&parse_changelogs,
+    skip       => \&skip_existing,
+    prefer_bin => 1,
     %visitopts,
 )->run;
 
