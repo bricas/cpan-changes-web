@@ -14,7 +14,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'YAML'       => 0,
-        'Dancer'     => 1.3014,
+        'Dancer'     => 1.3020, # required for ':script'
         # App requirements
         'Dancer::Plugin::DBIC' => 0,
         'DBIx::Class' => 0,
