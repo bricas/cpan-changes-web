@@ -1,4 +1,4 @@
-<h2><% params.dist %></h2>
+<h2><% params.dist %> (<a href="<% request.base %>dist/<% params.dist %>/feed">feed</a>)</h2>
 <p><strong>Links:</strong> <a href="http://search.cpan.org/dist/<% params.dist %>">search.cpan</a></p>
 <div id=status>
     <h3>Status</h3>

@@ -1,6 +1,9 @@
 package CPAN::Changes::Web;
+
 use Dancer ':syntax';
 use Dancer::Plugin::DBIC;
+use XML::Atom::SimpleFeed;
+use HTML::Entities ();
 
 our $VERSION = '0.1';
 
@@ -29,6 +32,7 @@ get '/' => sub {
         releases_pass     => $pass,
         releases_fail     => $fail,
         releases_progress => int( $pass / ( $pass + $fail ) * 100 ),
+        recent_releases   => scalar $releases->recent,
         };
 };
 
@@ -38,56 +42,115 @@ get '/author' => sub {
         title      => 'Authors',
         author_uri => uri_for( '/author' ),
         authors    => [
-            vars->{ scan }->releases(
-                {}, { group_by => 'author', order_by => 'author' }
-                )->get_column( 'author' )->all
+            vars->{ scan }->releases( {},
+                { group_by => 'author', order_by => 'author' } )
+                ->get_column( 'author' )->all
         ]
         };
 };
 
 get '/author/:id' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } } );
-    my $pass = $releases->passes->count;
-    my $fail = $releases->failures->count;
+    my $pass     = $releases->passes->count;
+    my $fail     = $releases->failures->count;
 
-    template 'author/id',
-        {
-        title    => params->{ id },
-        dist_uri => uri_for( '/dist' ),
-        releases => $releases,
-        pass     => $pass,
-        fail     => $fail,
-        progress => int( $pass / ( $pass + $fail ) * 100 )
-        };
+    template 'author/id', {
+        title        => params->{ id },
+        dist_uri     => uri_for( '/dist' ),
+        releases     => $releases,
+        pass         => $pass,
+        fail         => $fail,
+        progress     => int( $pass / ( $pass + $fail ) * 100 ),
+        header_links => [
+            {   rel   => 'alternate',
+                type  => 'application/atom+xml',
+                title => 'Releases by ' . params->{ id },
+                href  => uri_for( '/author/' . params->{ id } . '/feed' )
+            }
+            ]
+
+    };
+};
+
+get '/author/:id/feed' => sub {
+    my $releases = vars->{ scan }->releases( { author => params->{ id } },
+        { order_by => 'dist_timestamp DESC' } );
+
+    my $feed = XML::Atom::SimpleFeed->new(
+        title => 'Releases by ' . params->{ id },
+        link  => uri_for( '/' ),
+        link  => {
+            rel  => 'self',
+            href => uri_for( '/author/' . params->{ id } . '/feed' ),
+        },
+        updated => $releases->first->dist_timestamp . 'Z',
+        author  => 'CPAN::Changes Kwalitee Service',
+        id      => uri_for( '/author/' . params->{ id } . '/feed' ),
+    );
+
+    _releases_to_entries( $feed, $releases );
+
+    content_type( 'application/atom+xml' );
+    return $feed->as_string;
 };
 
 get '/dist' => sub {
     template 'dist/index',
         {
-        title    => 'Distributions',
-        dist_uri => uri_for( '/dist' ),
-        distributions    => [
-            vars->{ scan }->releases(
-                {}, { group_by => 'distribution' }
-                )->get_column( 'distribution' )->all
+        title         => 'Distributions',
+        dist_uri      => uri_for( '/dist' ),
+        distributions => [
+            vars->{ scan }->releases( {}, { group_by => 'distribution' } )
+                ->get_column( 'distribution' )->all
         ]
         };
 };
 
 get '/dist/:dist' => sub {
-    my $releases = vars->{ scan }->releases( { distribution => params->{ dist } } );
+    my $releases
+        = vars->{ scan }->releases( { distribution => params->{ dist } } );
     my $pass = $releases->passes->count;
     my $fail = $releases->failures->count;
 
     template 'dist/dist',
         {
-        title      => params->{ dist },
-        author_uri => uri_for( '/author' ),
-        releases => $releases,
-        pass     => $pass,
-        fail     => $fail,
-        progress => int( $pass / ( $pass + $fail ) * 100 )
+        title        => params->{ dist },
+        author_uri   => uri_for( '/author' ),
+        releases     => $releases,
+        pass         => $pass,
+        fail         => $fail,
+        progress     => int( $pass / ( $pass + $fail ) * 100 ),
+        header_links => [
+            {   rel   => 'alternate',
+                type  => 'application/atom+xml',
+                title => 'Releases for ' . params->{ dist },
+                href  => uri_for( '/dist/' . params->{ dist } . '/feed' )
+            }
+        ]
         };
+};
+
+get '/dist/:dist/feed' => sub {
+    my $releases
+        = vars->{ scan }->releases( { distribution => params->{ dist } } );
+
+    my $feed = XML::Atom::SimpleFeed->new(
+        title => 'Releases for ' . params->{ dist },
+        link  => uri_for( '/' ),
+        link  => {
+            rel  => 'self',
+            href => uri_for( '/dist/' . params->{ dist } . '/feed' ),
+        },
+        updated => $releases->first->dist_timestamp . 'Z',
+        author  => 'CPAN::Changes Kwalitee Service',
+        id      => uri_for( '/dist/' . params->{ dist } . '/feed' ),
+    );
+
+    _releases_to_entries( $feed, $releases );
+
+    content_type( 'application/atom+xml' );
+    return $feed->as_string;
+
 };
 
 get '/search' => sub {
@@ -95,36 +158,82 @@ get '/search' => sub {
 };
 
 post '/search' => sub {
-    my $search = params->{q};
+    my $search = params->{ q };
 
-    if ( params->{t} eq 'dist' ) {
+    if ( params->{ t } eq 'dist' ) {
         template 'dist/index',
             {
-            title    => 'Search Distributions',
-            dist_uri => uri_for( '/dist' ),
-            distributions    => [
+            title         => 'Search Distributions',
+            dist_uri      => uri_for( '/dist' ),
+            distributions => [
                 vars->{ scan }->releases(
-                    {
-                    distribution => { 'like', "%$search%"}
-                    }, { group_by => 'distribution', order_by => 'distribution' }
+                    { distribution => { 'like', "%$search%" } },
+                    {   group_by => 'distribution',
+                        order_by => 'distribution'
+                    }
                     )->get_column( 'distribution' )->all
             ]
             };
     }
     else {
         template 'author/index',
-        {
-        title      => 'Search Authors',
-        author_uri => uri_for( '/author' ),
-        authors    => [
-            vars->{ scan }->releases(
-                {
-                author => { 'like', "%$search%"}
-                }, { group_by => 'author', order_by => 'author' }
-                )->get_column( 'author' )->all
-        ]
-        };
+            {
+            title      => 'Search Authors',
+            author_uri => uri_for( '/author' ),
+            authors    => [
+                vars->{ scan }->releases(
+                    { author => { 'like', "%$search%" } },
+                    { group_by => 'author', order_by => 'author' }
+                    )->get_column( 'author' )->all
+            ]
+            };
     }
 };
+
+get '/recent/feed' => sub {
+    my $releases = vars->{ scan }->releases->recent;
+
+    my $feed = XML::Atom::SimpleFeed->new(
+        title   => 'Recent Releases',
+        link    => uri_for( '/' ),
+        link    => { rel => 'self', href => uri_for( '/recent/feed' ), },
+        updated => $releases->first->dist_timestamp . 'Z',
+        author  => 'CPAN::Changes Kwalitee Service',
+        id      => uri_for( '/recent/feed' ),
+    );
+
+    $releases->reset;
+
+    _releases_to_entries( $feed, $releases );
+
+    content_type( 'application/atom+xml' );
+    return $feed->as_string;
+};
+
+sub _releases_to_entries {
+    my ( $feed, $releases ) = @_;
+
+    $releases->reset;
+
+    while ( my $release = $releases->next ) {
+        $feed->add_entry(
+            title => sprintf( '%s %s (%s)',
+                $release->distribution, $release->version,
+                $release->author ),
+            link    => uri_for( '/dist/' . $release->distribution ),
+            summary => {
+                type    => 'html',
+                content => sprintf(
+                    '<pre>%s</pre>',
+                    HTML::Entities::encode_entities(
+                        $release->failure || $release->changes_for_release
+                    )
+                )
+            },
+            updated => $release->dist_timestamp . 'Z',
+            id      => uri_for( '/dist/' . $release->distribution ),
+        );
+    }
+}
 
 true;
