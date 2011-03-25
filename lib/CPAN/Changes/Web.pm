@@ -216,6 +216,10 @@ sub _releases_to_entries {
     $releases->reset;
 
     while ( my $release = $releases->next ) {
+        my $tmpl
+            = $release->failure
+            ? '<pre style="color:red">ERROR: %s</pre>'
+            : '<pre>%s</pre>';
         $feed->add_entry(
             title => sprintf( '%s %s (%s)',
                 $release->distribution, $release->version,
@@ -224,7 +228,7 @@ sub _releases_to_entries {
             summary => {
                 type    => 'html',
                 content => sprintf(
-                    '<pre>%s</pre>',
+                    $tmpl,
                     HTML::Entities::encode_entities(
                         $release->failure || $release->changes_for_release
                     )
