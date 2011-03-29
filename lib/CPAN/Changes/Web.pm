@@ -230,7 +230,7 @@ sub _releases_to_entries {
                 content => sprintf(
                     $tmpl,
                     HTML::Entities::encode_entities(
-                        $release->failure || $release->changes_for_release
+                        $release->failure || $release->changes_for_release || ''
                     )
                 )
             },
