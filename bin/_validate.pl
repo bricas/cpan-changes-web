@@ -1,5 +1,20 @@
 use Try::Tiny;
 
+# From DateTime::Format::W3CDTF
+my $date_re = qr{(\d\d\d\d) # Year
+                 (?:-(\d\d) # -Month
+                 (?:-(\d\d) # -Day
+                 (?:T
+                   (\d\d):(\d\d) # Hour:Minute
+                   (?:
+                     :(\d\d)     # :Second
+                     (\.\d+)?    # .Fractional_Second
+                   )?
+                   ( Z          # UTC
+                   | [+-]\d\d:\d\d    # Hour:Minute TZ offset
+                     (?::\d\d)?       # :Second TZ offset
+                 )?)?)?)?}x;
+
 sub validate_changes {
     my( $release ) = shift;
 
@@ -27,8 +42,7 @@ sub validate_changes {
         return;
     }
 
-    # TODO: be more strict about this validation
-    if ( !$latest->date or $latest->date !~ m{^\d{4}-\d{2}-\d{2}} ) {
+    if ( !$latest->date or $latest->date !~ m{^$date_re\s*$} ) {
         $release->update(
             {   failure => sprintf
                     'Latest changelog release date (%s) does not look like a W3CDTF',
