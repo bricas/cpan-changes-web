@@ -27,6 +27,7 @@ sub validate_changes {
         return;
     }
 
+    # TODO: be more strict about this validation
     if ( !$latest->date or $latest->date !~ m{^\d{4}-\d{2}-\d{2}} ) {
         $release->update(
             {   failure => sprintf
