@@ -23,7 +23,7 @@
 </ul>
 <h2>News</h2>
 <h3>Parser updates - 2011-03-29</h3>
-<p>You may have noticed a sharp increase in conformance (from 10% to over 30%). This is because the site has been upgraded to use <a href="http://search.cpan.org/dist/CPAN-Changes-0.09/">CPAN::Changes 0.09</a>, which includes more lenient date parsing code. Although timestamps (a la <code>scalar localtime</code>) are parsed, everyone is encouraged to use W3CDTF dates and the existing tools will continue to only spit out dates in that format.</p>
+<p>You may have noticed a sharp increase in conformance (from 10% to nearly 30%). This is because the site has been upgraded to use <a href="http://search.cpan.org/dist/CPAN-Changes-0.09/">CPAN::Changes 0.09</a>, which includes more lenient date parsing code. Although timestamps (a la <code>scalar localtime</code>) are parsed, everyone is encouraged to use W3CDTF dates and the existing tools will continue to only spit out dates in that format.</p>
 <h3>Feeds and other updates - 2011-03-22</h3>
 <p>A number of site improvements have landed (thanks in part to <a href="https://github.com/hobbestigrou">hobbestigrou</a>!). This includes basic search functionality and iprovements to the dist and author listsings. Furthermore, we now have atom feeds for recent distributions, plus feeds for any given distribution or author.</p>
 <p>The next task will be to lay the framework for updating the content on this site at regular and more frequent intervals. </p>
