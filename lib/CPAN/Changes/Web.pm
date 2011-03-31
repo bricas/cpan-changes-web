@@ -51,6 +51,11 @@ get '/author' => sub {
 
 get '/author/:id' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } } );
+
+    if( !$releases->count ) {
+        return send_error( 'Not Found', 404 );
+    }
+
     my $pass     = $releases->passes->count;
     my $fail     = $releases->failures->count;
 
@@ -75,6 +80,10 @@ get '/author/:id' => sub {
 get '/author/:id/feed' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } },
         { order_by => 'dist_timestamp DESC' } );
+
+    if( !$releases->count ) {
+        return send_error( 'Not Found', 404 );
+    }
 
     my $feed = XML::Atom::SimpleFeed->new(
         title => 'Releases by ' . params->{ id },
@@ -109,6 +118,11 @@ get '/dist' => sub {
 get '/dist/:dist' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
+
+    if( !$releases->count ) {
+        return send_error( 'Not Found', 404 );
+    }
+
     my $pass = $releases->passes->count;
     my $fail = $releases->failures->count;
 
@@ -133,6 +147,10 @@ get '/dist/:dist' => sub {
 get '/dist/:dist/feed' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
+
+    if( !$releases->count ) {
+        return send_error( 'Not Found', 404 );
+    }
 
     my $feed = XML::Atom::SimpleFeed->new(
         title => 'Releases for ' . params->{ dist },
