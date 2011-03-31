@@ -4,8 +4,25 @@ use Dancer ':syntax';
 use Dancer::Plugin::DBIC;
 use XML::Atom::SimpleFeed;
 use HTML::Entities ();
+use CPAN::Changes  ();
+use Try::Tiny;
 
 our $VERSION = '0.1';
+
+# From DateTime::Format::W3CDTF
+my $date_re = qr{(\d\d\d\d) # Year
+                 (?:-(\d\d) # -Month
+                 (?:-(\d\d) # -Day
+                 (?:T
+                   (\d\d):(\d\d) # Hour:Minute
+                   (?:
+                     :(\d\d)     # :Second
+                     (\.\d+)?    # .Fractional_Second
+                   )?
+                   ( Z          # UTC
+                   | [+-]\d\d:\d\d    # Hour:Minute TZ offset
+                     (?::\d\d)?       # :Second TZ offset
+                 )?)?)?)?}x;
 
 before sub {
     var scan => schema( 'db' )->resultset( 'Scan' )->first;
@@ -14,6 +31,7 @@ before sub {
 before_template sub {
     my $tokens = shift;
     $tokens->{ scan } = vars->{ scan };
+    $tokens->{ title } ||= vars->{ title } || '';
 };
 
 get '/' => sub {
@@ -37,9 +55,9 @@ get '/' => sub {
 };
 
 get '/author' => sub {
+    var title => 'Authors';
     template 'author/index',
         {
-        title      => 'Authors',
         author_uri => uri_for( '/author' ),
         authors    => [
             vars->{ scan }->releases( {},
@@ -52,15 +70,16 @@ get '/author' => sub {
 get '/author/:id' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } } );
 
-    if( !$releases->count ) {
+    if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
     }
 
-    my $pass     = $releases->passes->count;
-    my $fail     = $releases->failures->count;
+    my $pass = $releases->passes->count;
+    my $fail = $releases->failures->count;
+
+    var title => params->{ id };
 
     template 'author/id', {
-        title        => params->{ id },
         dist_uri     => uri_for( '/dist' ),
         releases     => $releases,
         pass         => $pass,
@@ -81,7 +100,7 @@ get '/author/:id/feed' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } },
         { order_by => 'dist_timestamp DESC' } );
 
-    if( !$releases->count ) {
+    if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
     }
 
@@ -104,9 +123,9 @@ get '/author/:id/feed' => sub {
 };
 
 get '/dist' => sub {
+    var title => 'Distributions';
     template 'dist/index',
         {
-        title         => 'Distributions',
         dist_uri      => uri_for( '/dist' ),
         distributions => [
             vars->{ scan }->releases( {}, { group_by => 'distribution' } )
@@ -119,16 +138,17 @@ get '/dist/:dist' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
 
-    if( !$releases->count ) {
+    if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
     }
 
     my $pass = $releases->passes->count;
     my $fail = $releases->failures->count;
 
+    var title => params->{ dist };
+
     template 'dist/dist',
         {
-        title        => params->{ dist },
         author_uri   => uri_for( '/author' ),
         releases     => $releases,
         pass         => $pass,
@@ -148,7 +168,7 @@ get '/dist/:dist/feed' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
 
-    if( !$releases->count ) {
+    if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
     }
 
@@ -172,16 +192,17 @@ get '/dist/:dist/feed' => sub {
 };
 
 get '/search' => sub {
-    template 'search/index', { title => 'Search' };
+    var title => 'Search';
+    template 'search/index', {};
 };
 
 post '/search' => sub {
     my $search = params->{ q };
 
     if ( params->{ t } eq 'dist' ) {
+        var title => 'Search Distributions';
         template 'dist/index',
             {
-            title         => 'Search Distributions',
             dist_uri      => uri_for( '/dist' ),
             distributions => [
                 vars->{ scan }->releases(
@@ -194,9 +215,9 @@ post '/search' => sub {
             };
     }
     else {
+        var title => 'Search Authors';
         template 'author/index',
             {
-            title      => 'Search Authors',
             author_uri => uri_for( '/author' ),
             authors    => [
                 vars->{ scan }->releases(
@@ -206,6 +227,47 @@ post '/search' => sub {
             ]
             };
     }
+};
+
+get '/validate' => sub {
+    var title => 'Validation Tools';
+    template 'validate/index', {};
+};
+
+post '/validate' => sub {
+    my $fulltext = params->{ c };
+
+    return redirect '/validate' unless $fulltext;
+
+    var title => 'Validation Results';
+
+    my $changes = try {
+        local $SIG{ __WARN__ } = sub { };    # ignore warnings
+        CPAN::Changes->load_string( $fulltext );
+    }
+    catch {
+        return template( 'validate/result',
+            { failure => "Parse error: $_", } );
+    };
+
+    return $changes unless ref $changes;
+
+    my ( $latest ) = reverse( $changes->releases );
+    if ( !$latest ) {
+        return template( 'validate/result',
+            { failure => 'No releases found in "Changes" file' } );
+    }
+    if ( !$latest->date or $latest->date !~ m{^$date_re\s*$} ) {
+        my $d = $latest->date || '';
+        return template(
+            'validate/result',
+            {   failure =>
+                    "Latest changelog release date (${d}) does not look like a W3CDTF"
+            }
+        );
+    }
+
+    template( 'validate/result', { changes => $changes } );
 };
 
 get '/recent/feed' => sub {
@@ -248,7 +310,9 @@ sub _releases_to_entries {
                 content => sprintf(
                     $tmpl,
                     HTML::Entities::encode_entities(
-                        $release->failure || $release->changes_for_release || ''
+                               $release->failure
+                            || $release->changes_for_release
+                            || ''
                     )
                 )
             },
