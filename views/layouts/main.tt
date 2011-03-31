@@ -2,7 +2,7 @@
 <html lang=en>
 <head>
     <meta charset=<% settings.charset %>>
-    <title><% IF title %><% title %> | <% END %>CPAN::Changes Kwalitee Service (beta)</title>
+    <title><% IF title %><% title %> | <% END %>CPAN::Changes Kwalitee Service</title>
     <link href='http://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Tinos' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="<% request.base %>css/style.css">
@@ -19,7 +19,7 @@
 <body>
 <div id=wrapper>
     <div id=header>
-        <h1>CPAN::Changes Kwalitee Service (beta)</h1>
+        <h1>CPAN::Changes Kwalitee Service</h1>
     </div>
     <div id=menu>
         <ul>
