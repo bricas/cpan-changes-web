@@ -1,7 +1,17 @@
 <h2>Validation Tools</h2>
 <h3>Online Validator</h3>
 <form method=post id=validator>
-<textarea name=c></textarea>
+<textarea name=c>
+Revision history for perl module Foo::Bar
+
+0.02 2009-07-17
+
+ - Added more foo() tests
+
+0.01 2009-07-16
+
+ - Initial release
+</textarea>
 <input type=submit class=submit value=Validate>
 </form>
 <h3>Other Tools</h3>
