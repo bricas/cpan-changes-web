@@ -150,6 +150,7 @@ get '/dist/:dist' => sub {
     template 'dist/dist',
         {
         author_uri   => uri_for( '/author' ),
+        dist_uri     => uri_for( '/dist' ),
         releases     => $releases,
         pass         => $pass,
         fail         => $fail,
@@ -189,6 +190,24 @@ get '/dist/:dist/feed' => sub {
     content_type( 'application/atom+xml' );
     return $feed->as_string;
 
+};
+
+get '/dist/:dist/:version' => sub {
+    my $release
+        = vars->{ scan }->releases( { distribution => params->{ dist }, version => params->{ version } } )->first;
+
+    if ( !$release ) {
+        return send_error( 'Not Found', 404 );
+    }
+
+    var title => sprintf( '%s %s (%s)', params->{ dist }, params->{ version }, $release->author );
+
+    template 'dist/release',
+        {
+        author_uri   => uri_for( '/author' ),
+        dist_uri     => uri_for( '/dist' ),
+        release      => $release,
+        };
 };
 
 get '/search' => sub {

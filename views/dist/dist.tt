@@ -15,6 +15,7 @@
 </div>
 <ul id=releases>
 <% WHILE( release = releases.next ) %>
-    <li><% release.distribution %> <% release.version %> by <a href="<% author_uri %>/<% release.author %>"><% release.author %></a> (<% IF !release.failure %>PASS)<% ELSE %>FAIL)<br><span class=error><% release.failure %></span><% END %></li>
+    <li><span class=status>[<% IF !release.failure %>PASS]<% ELSE %>FAIL]<% END %></span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% author_uri %>/<% release.author %>"><% release.author %></a>
+<% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
 </ul>

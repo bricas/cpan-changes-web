@@ -5,6 +5,8 @@ use warnings;
 
 use base qw( DBIx::Class );
 
+use CPAN::Changes;
+
 __PACKAGE__->load_components( qw( TimeStamp Core ) );
 __PACKAGE__->table( 'release' );
 __PACKAGE__->add_columns(
@@ -71,5 +73,9 @@ __PACKAGE__->has_many( scan_release_joins =>
         'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' =>
         'release_id' );
 __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
+
+sub as_changes_obj {
+    return CPAN::Changes->load_string( shift->changes_fulltext );
+}
 
 1;
