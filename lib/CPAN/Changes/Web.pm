@@ -317,7 +317,7 @@ sub _releases_to_entries {
                 )
             },
             updated => $release->dist_timestamp . 'Z',
-            id      => uri_for( '/dist/' . $release->distribution ),
+            id      => sprintf( '%s-%s-%s', $release->author, $release->distribution, $release->version ),
         );
     }
 }
