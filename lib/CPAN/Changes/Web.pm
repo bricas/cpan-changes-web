@@ -319,11 +319,13 @@ sub _releases_to_entries {
             = $release->failure
             ? '<pre style="color:red">ERROR: %s</pre>'
             : '<pre>%s</pre>';
+        my $link = uri_for( '/' . join( '/', 'dist', $release->distribution, $release->version ) );
+
         $feed->add_entry(
             title => sprintf( '%s %s (%s)',
                 $release->distribution, $release->version,
                 $release->author ),
-            link    => uri_for( '/dist/' . $release->distribution ),
+            link    => $link,
             summary => {
                 type    => 'html',
                 content => sprintf(
@@ -336,7 +338,7 @@ sub _releases_to_entries {
                 )
             },
             updated => $release->dist_timestamp . 'Z',
-            id      => sprintf( '%s-%s-%s', $release->author, $release->distribution, $release->version ),
+            id      => $link,
         );
     }
 }
