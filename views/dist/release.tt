@@ -2,6 +2,12 @@
 <p><strong>Links:</strong> <a href="http://search.cpan.org/dist/<% params.dist %>-<% params.version %>">search.cpan</a></p>
 <% IF release.failure %>
 <p class=error>ERROR: <% release.failure %></p>
+<% IF release.changes_fulltext %>
+<p>Here's what we tried to parse:</p>
+<pre class=result>
+<% release.changes_fulltext -%>
+</pre>
+<% END %>
 <% ELSE %>
 <p class=success>Congratulations, no errors were found!</p>
 <p>This is what we think your changelog should look like:</p>
