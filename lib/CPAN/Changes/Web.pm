@@ -58,8 +58,10 @@ get '/author' => sub {
     var title => 'Authors';
     template 'author/index',
         {
-        author_uri => uri_for( '/author' ),
-        authors    => [
+        author_uri       => uri_for( '/author' ),
+        current_page     => params->{page}, 
+        entries_per_page => 100,
+        authors          => [
             vars->{ scan }->releases( {},
                 { group_by => 'author', order_by => 'author' } )
                 ->get_column( 'author' )->all
@@ -126,8 +128,10 @@ get '/dist' => sub {
     var title => 'Distributions';
     template 'dist/index',
         {
-        dist_uri      => uri_for( '/dist' ),
-        distributions => [
+        dist_uri         => uri_for( '/dist' ),
+        current_page     => params->{page}, 
+        entries_per_page => 100,
+        distributions    => [
             vars->{ scan }->releases( {}, { group_by => 'distribution' } )
                 ->get_column( 'distribution' )->all
         ]

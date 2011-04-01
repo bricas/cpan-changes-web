@@ -1,0 +1,14 @@
+<% IF title == 'Authors' %>
+    <% link = 'author' %>
+<% ELSE %>
+    <% link = 'dist' %>
+<% END %>
+
+<strong>First page:</strong> <a href="<% link %>?page=<% page.first_page %>">First page</a>
+<% IF page.previous_page %>
+    <strong>Prev page:</strong> <a href="<% link %>?page=<% page.previous_page %>"><% page.previous_page %></a>
+<% END %>
+<% IF page.next_page %>
+    <strong>Next page:</strong> <a href="<% link %>?page=<% page.next_page %>"><% page.next_page %></a>
+<% END %>
+<strong>Last page:</strong> <a href="<% link %>?page=<% page.last_page %>">Last page</a>
