@@ -1,0 +1,13 @@
+<h2>Validation Results</h2>
+<div id=validation>
+<% IF failure %>
+<p class=error>&#10007; ERROR: <% failure %></p>
+<% ELSE %>
+<p class=success>&#10003; Congratulations, no errors were found!</p>
+<p>This is what we think your changelog should look like:</p>
+<pre class=result>
+<% changes.serialize -%>
+</pre>
+<p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
+<% END %>
+</div>

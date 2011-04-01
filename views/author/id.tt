@@ -1,4 +1,4 @@
-<h2><% params.id %></h2>
+<h2><% params.id %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
 <p><strong>Links:</strong> <a href="http://search.cpan.org/~<% params.id %>">search.cpan</a></p>
 <div id=status>
     <h3>Status</h3>
@@ -15,6 +15,7 @@
 </div>
 <ul id=releases>
 <% WHILE( release = releases.next ) %>
-    <li><a href="<% dist_uri %>/<% release.distribution %>"><% release.distribution %> <% release.version %></a> (<% IF !release.failure %>PASS)<% ELSE %>FAIL)<br><span class=error><% release.failure %></span><% END %></li>
+    <li><span class=status>[<% IF !release.failure %>PASS]<% ELSE %>FAIL]<% END %></span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+<% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
 </ul>

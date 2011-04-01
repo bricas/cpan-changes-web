@@ -14,13 +14,14 @@ WriteMakefile(
     PREREQ_PM => {
         'Test::More' => 0,
         'YAML'       => 0,
-        'Dancer'     => 1.3014,
+        'Dancer'     => 1.3020, # required for ':script'
         # App requirements
         'Dancer::Plugin::DBIC' => 0,
         'Dancer::Plugin::Feed' => 0,
         'DBIx::Class' => 0,
         'Template' => 0,
         'DBIx::Class::TimeStamp' => 0,
+        'XML::Atom::SimpleFeed' => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'CPAN-Changes-Web-*' },

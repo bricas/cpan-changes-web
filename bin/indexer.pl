@@ -7,6 +7,8 @@ use lib 'lib';
 
 require 'bin/_validate.pl';
 
+$|++;
+
 use CPAN::Changes::Web;
 use Dancer ':script';
 use CPAN::Changes;
@@ -32,21 +34,26 @@ else {
     $scan->update( { cpan_changes_version => $CPAN::Changes::VERSION } );
 }
 
+my $release_rs = $schema->resultset( 'Release' );
+my $release;
+my $counter = 0;
+
 CPAN::Mini::Visit->new(
-    minicpan => $minicpan || undef,
-    callback => \&parse_changelogs,
+    minicpan   => $minicpan || undef,
+    callback   => \&parse_changelogs,
+    ignore     => [ \&skip_existing ],
+    prefer_bin => 1,
     %visitopts,
 )->run;
 
 print "\n";
 
-sub parse_changelogs {
+sub skip_existing {
     my $job = shift;
-    printf "\r[%05d] %-71.71s", $job->{ counter }, $job->{ dist };
+    printf "\r[%05d] %-71.71s", ++$counter, $job->{ dist };
 
     my $distinfo = CPAN::DistnameInfo->new( $job->{ dist } );
-
-    my $release = $schema->resultset( 'Release' )->find_or_new(
+    $release = $release_rs->find_or_new(
         {   distribution   => $distinfo->dist,
             author         => $job->{ author },
             version        => $distinfo->version || 'undef', # e.g. BCARROLL/Tk-GraphMan.zip
@@ -54,13 +61,18 @@ sub parse_changelogs {
         },
         { key => 'release_key' }
     );
+
     my $exists = $release->in_storage;
     $release->insert if !$exists;
 
     # use eval to ignore possible errors via resume or forced reparsing
     eval { $scan->add_to_releases( $release ); };
 
-    return unless !$exists || $force;
+    return ( !$exists || $force ) ? 0 : 1;
+}
+
+sub parse_changelogs {
+    my $job = shift;
 
     if ( !-f 'Changes' ) {
         $release->update( { failure => 'No "Changes" file found.' } );
