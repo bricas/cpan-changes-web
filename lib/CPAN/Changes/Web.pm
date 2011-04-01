@@ -2,15 +2,10 @@ package CPAN::Changes::Web;
 
 use Dancer ':syntax';
 use Dancer::Plugin::DBIC;
-<<<<<<< HEAD
-use Dancer::Plugin::Feed;
-use DateTime;
-=======
 use XML::Atom::SimpleFeed;
 use HTML::Entities ();
 use CPAN::Changes  ();
 use Try::Tiny;
->>>>>>> upstream/master
 
 our $VERSION = '0.1';
 
