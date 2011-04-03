@@ -60,7 +60,7 @@ get '/author' => sub {
         {
         author_uri       => uri_for( '/author' ),
         current_page     => params->{page}, 
-        entries_per_page => 100,
+        entries_per_page => 1000,
         authors          => [
             vars->{ scan }->releases( {},
                 { group_by => 'author', order_by => 'author' } )
@@ -130,7 +130,7 @@ get '/dist' => sub {
         {
         dist_uri         => uri_for( '/dist' ),
         current_page     => params->{page}, 
-        entries_per_page => 100,
+        entries_per_page => 1000,
         distributions    => [
             vars->{ scan }->releases( {}, { group_by => 'distribution' } )
                 ->get_column( 'distribution' )->all
