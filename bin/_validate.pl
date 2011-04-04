@@ -35,20 +35,12 @@ sub validate_changes {
 
     return unless $changes;
 
-    my ( $latest ) = reverse( $changes->releases );
+    my @releases = reverse( $changes->releases );
+    my $latest   = $releases[ 0 ];
+
     if ( !$latest ) {
         $release->update(
             { failure => 'No releases found in "Changes" file' } );
-        return;
-    }
-
-    if ( !$latest->date or $latest->date !~ m{^$date_re\s*$} ) {
-        $release->update(
-            {   failure => sprintf
-                    'Latest changelog release date (%s) does not look like a W3CDTF',
-                $latest->date || ''
-            }
-        );
         return;
     }
 
@@ -60,6 +52,19 @@ sub validate_changes {
             }
         );
         return;
+    }
+
+    # Check all dates
+    for( map { $_->date } @releases ) {
+        if ( !$_ or $_ !~ m{^$date_re\s*$} ) {
+            $release->update(
+                {   failure => sprintf
+                        'Changelog release date (%s) does not look like a W3CDTF',
+                    $_ || ''
+                }
+            );
+            return;
+        }
     }
 
     $release->update(
