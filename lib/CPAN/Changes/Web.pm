@@ -6,6 +6,7 @@ use XML::Atom::SimpleFeed;
 use HTML::Entities ();
 use CPAN::Changes  ();
 use Try::Tiny;
+use JSON::XS ();
 
 our $VERSION = '0.1';
 
@@ -193,6 +194,21 @@ get '/dist/:dist/feed' => sub {
 
     content_type( 'application/atom+xml' );
     return $feed->as_string;
+
+};
+
+get '/dist/:dist/json' => sub {
+    my $release
+        = vars->{ scan }->releases( { distribution => params->{ dist } } )->first;
+
+    if ( !$release || $release->failure ) {
+        return send_error( 'Not Found', 404 );
+    }
+
+    my $changes = $release->as_changes_obj;
+
+    content_type( 'application/json' );
+    return JSON::XS::encode_json( [ map { { %$_ } } reverse( $changes->releases )  ] );
 
 };
 
