@@ -200,14 +200,14 @@ get '/dist/:dist/json' => sub {
     my $release
         = vars->{ scan }->releases( { distribution => params->{ dist } } )->first;
 
-    if ( !$release || $release->failure ) {
+    if ( !$release ) {
         return send_error( 'Not Found', 404 );
     }
 
-    my $changes = $release->as_changes_obj;
-
     content_type( 'application/json' );
-    return to_json( [ map { { %$_ } } reverse( $changes->releases )  ] );
+
+    return to_json( { error => $release->failure } ) if $release->failure;
+    return to_json( [ map { { %$_ } } reverse( $release->as_changes_obj->releases )  ] );
 
 };
 
