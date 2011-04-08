@@ -31,4 +31,14 @@ __PACKAGE__->has_many( scan_release_joins =>
         'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' => 'scan_id' );
 __PACKAGE__->many_to_many( releases => 'scan_release_joins' => 'release' );
 
+sub hall_of_fame_authors {
+    my $self = shift;
+    my $inner = $self->releases( { failure => { NOT => undef } } );
+
+    return $self->releases(
+        {   author => { 'NOT IN' => $inner->get_column( 'author' )->as_query }
+        }
+    )->authors;
+}
+
 1;

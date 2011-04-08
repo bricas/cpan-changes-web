@@ -59,13 +59,9 @@ get '/author' => sub {
     template 'author/index',
         {
         author_uri       => uri_for( '/author' ),
-        current_page     => params->{page}, 
+        current_page     => params->{ page },
         entries_per_page => 1000,
-        authors          => [
-            vars->{ scan }->releases( {},
-                { group_by => 'author', order_by => 'author' } )
-                ->get_column( 'author' )->all
-        ]
+        authors          => vars->{ scan }->releases->authors
         };
 };
 
@@ -79,7 +75,9 @@ get '/author/:id' => sub {
     my $pass = $releases->passes->count;
     my $fail = $releases->failures->count;
 
-    var title => params->{ id };
+    my $author_info = $releases->authors->first;
+
+    var title => $author_info->name;
 
     template 'author/id', {
         dist_uri     => uri_for( '/dist' ),
@@ -87,6 +85,7 @@ get '/author/:id' => sub {
         pass         => $pass,
         fail         => $fail,
         progress     => int( $pass / ( $pass + $fail ) * 100 ),
+        author_info  => $author_info,
         header_links => [
             {   rel   => 'alternate',
                 type  => 'application/atom+xml',
@@ -106,8 +105,10 @@ get '/author/:id/feed' => sub {
         return send_error( 'Not Found', 404 );
     }
 
+    my $author_info = $releases->authors->first;
+
     my $feed = XML::Atom::SimpleFeed->new(
-        title => 'Releases by ' . params->{ id },
+        title => 'Releases by ' . $author_info->name,
         link  => uri_for( '/' ),
         link  => {
             rel  => 'self',
@@ -129,7 +130,7 @@ get '/dist' => sub {
     template 'dist/index',
         {
         dist_uri         => uri_for( '/dist' ),
-        current_page     => params->{page}, 
+        current_page     => params->{ page },
         entries_per_page => 1000,
         distributions    => [
             vars->{ scan }->releases( {}, { group_by => 'distribution' } )
@@ -198,7 +199,8 @@ get '/dist/:dist/feed' => sub {
 
 get '/dist/:dist/json' => sub {
     my $release
-        = vars->{ scan }->releases( { distribution => params->{ dist } } )->first;
+        = vars->{ scan }->releases( { distribution => params->{ dist } } )
+        ->first;
 
     if ( !$release ) {
         return send_error( 'Not Found', 404 );
@@ -207,25 +209,35 @@ get '/dist/:dist/json' => sub {
     content_type( 'application/json' );
 
     return to_json( { error => $release->failure } ) if $release->failure;
-    return to_json( [ map { { %$_ } } reverse( $release->as_changes_obj->releases )  ] );
+    return to_json(
+        [   map {
+                { %$_ }
+                } reverse( $release->as_changes_obj->releases )
+        ]
+    );
 
 };
 
 get '/dist/:dist/:version' => sub {
     my $release
-        = vars->{ scan }->releases( { distribution => params->{ dist }, version => params->{ version } } )->first;
+        = vars->{ scan }->releases(
+        { distribution => params->{ dist }, version => params->{ version } } )
+        ->first;
 
     if ( !$release ) {
         return send_error( 'Not Found', 404 );
     }
 
-    var title => sprintf( '%s %s (%s)', params->{ dist }, params->{ version }, $release->author );
+    var title => sprintf( '%s %s (%s)',
+        params->{ dist },
+        params->{ version },
+        $release->author );
 
     template 'dist/release',
         {
-        author_uri   => uri_for( '/author' ),
-        dist_uri     => uri_for( '/dist' ),
-        release      => $release,
+        author_uri => uri_for( '/author' ),
+        dist_uri   => uri_for( '/dist' ),
+        release    => $release,
         };
 };
 
@@ -267,6 +279,15 @@ post '/search' => sub {
     }
 };
 
+get '/hof' => sub {
+    var title => 'Hall of Fame';
+    template 'hof/index',
+        {
+        author_uri => uri_for( '/author' ),
+        authors    => vars->{ scan }->hall_of_fame_authors
+        };
+};
+
 get '/validate' => sub {
     var title => 'Validation Tools';
     template 'validate/index', {};
@@ -299,12 +320,11 @@ post '/validate' => sub {
     }
 
     # Check all dates
-    for( map { $_->date } @releases ) {
+    for ( map { $_->date } @releases ) {
         if ( !$_ or $_ !~ m{^$date_re\s*$} ) {
             return template(
                 'validate/result',
-                {   failure =>
-                        sprintf
+                {   failure => sprintf
                         'Changelog release date (%s) does not look like a W3CDTF',
                     $_ || ''
                 }
@@ -345,7 +365,12 @@ sub _releases_to_entries {
             = $release->failure
             ? '<pre style="color:red">ERROR: %s</pre>'
             : '<pre>%s</pre>';
-        my $link = uri_for( '/' . join( '/', 'dist', $release->distribution, $release->version ) );
+        my $link = uri_for(
+            '/'
+                . join(
+                '/', 'dist', $release->distribution, $release->version
+                )
+        );
 
         $feed->add_entry(
             title => sprintf( '%s %s (%s)',

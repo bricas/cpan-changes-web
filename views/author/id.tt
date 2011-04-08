@@ -1,4 +1,4 @@
-<h2><% params.id %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
+<h2><% author_info.name %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
 <p><strong>Links:</strong> <a href="http://search.cpan.org/~<% params.id %>">search.cpan</a></p>
 <div id=status>
     <h3>Status</h3>

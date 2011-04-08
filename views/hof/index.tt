@@ -1,17 +1,12 @@
-<% USE page = Pagination(authors.all, current_page, entries_per_page) %>
-
 <h2><% title %></h2>
 
-<form name="search" action="/search" method='post'>
-    <input type="search" name="q" placeholder="Search Authors..." /> <input type="submit" value="Search" />
-    <input type="hidden" name="t" value="author" />
-</form>
+<p>The following authors are currently at 100% compliance with the CPAN::Changes specification. Cheers!</p>
 
 <% letter = '' %>
 
 <div id=authors>
 
-<% FOREACH author IN page.page_data %>
+<% FOREACH author IN authors.all %>
     <% next_letter = author.id.substr(0, 1) FILTER upper %>
     <% IF letter != next_letter %>
 <% IF letter %></ul><% END %>
@@ -24,5 +19,3 @@
 </ul>
 
 </div>
-
-<% INCLUDE 'pagination.tt' %>

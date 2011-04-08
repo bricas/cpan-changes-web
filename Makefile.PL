@@ -22,6 +22,8 @@ WriteMakefile(
         'Template::Plugin::Pagination' => 0,
         'DBIx::Class::TimeStamp'       => 0,
         'XML::Atom::SimpleFeed'        => 0,
+        'CPAN::Changes'                => 0,
+        'Parse::CPAN::Authors'         => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES    => 'CPAN-Changes-Web-*' },

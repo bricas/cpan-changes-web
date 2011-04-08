@@ -28,4 +28,10 @@ sub recent {
     );
 }
 
+sub authors {
+    return
+        shift->search_related_rs( 'author_info', {},
+        { order_by => 'author_info.id', distinct => 1 } );
+}
+
 1;

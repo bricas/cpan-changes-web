@@ -227,3 +227,11 @@ pre.result {
     font-weight: bold;
     font-family: monospace;
 }
+
+#authors li a {
+    font-weight: bold;
+}
+
+#authors li {
+    margin-bottom: 5px;
+}

@@ -64,8 +64,10 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key( 'id' );
+
 # "COLLATE NOCASE" is an SQLite-ism
-__PACKAGE__->resultset_attributes( { order_by => [ 'distribution COLLATE NOCASE' ] } );
+__PACKAGE__->resultset_attributes(
+    { order_by => [ 'distribution COLLATE NOCASE' ] } );
 __PACKAGE__->add_unique_constraint(
     release_key => [ qw( distribution author version ) ], );
 
@@ -73,6 +75,11 @@ __PACKAGE__->has_many( scan_release_joins =>
         'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' =>
         'release_id' );
 __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
+
+__PACKAGE__->might_have(
+    'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
+    { 'foreign.id' => 'self.author' }
+);
 
 sub as_changes_obj {
     return CPAN::Changes->load_string( shift->changes_fulltext );
