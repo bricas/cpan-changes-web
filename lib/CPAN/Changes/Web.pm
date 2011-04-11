@@ -269,12 +269,13 @@ post '/search' => sub {
         template 'author/index',
             {
             author_uri => uri_for( '/author' ),
-            authors    => [
-                vars->{ scan }->releases(
-                    { author => { 'like', "%$search%" } },
-                    { group_by => 'author', order_by => 'author' }
-                    )->get_column( 'author' )->all
-            ]
+            authors    => vars->{ scan }->releases->authors->search_rs(
+                {   -or => {
+                        'author_info.id'   => { 'like', "%$search%" },
+                        'author_info.name' => { 'like', "%$search%" },
+                    }
+                }
+            )
             };
     }
 };
