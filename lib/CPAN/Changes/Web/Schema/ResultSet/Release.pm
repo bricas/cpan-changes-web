@@ -3,8 +3,6 @@ package CPAN::Changes::Web::Schema::ResultSet::Release;
 use strict;
 use warnings;
 
-use DateTime;
-
 use parent 'DBIx::Class::ResultSet';
 
 sub passes {
