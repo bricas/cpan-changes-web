@@ -23,7 +23,7 @@ WriteMakefile(
         'DBIx::Class::TimeStamp'       => 0,
         'XML::Atom::SimpleFeed'        => 0,
         'HTML::Entities'               => 0,
-        'CPAN::Changes'                => 0,
+        'CPAN::Changes'                => '0.15',
         'CPAN::DistnameInfo'           => 0,
         'PAN::Mini::Visit'             => 0,
         'Parse::CPAN::Authors'         => 0,
