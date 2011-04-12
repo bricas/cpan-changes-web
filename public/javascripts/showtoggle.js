@@ -26,4 +26,30 @@ $( document ).ready( function() {
         return false;
     } );
 
+    // Reformatted
+    $( '#showreformatted' ).click( function() {
+        $( '#showreformatted' ).css( 'font-weight', 'bold' );
+        $( '#showoriginal,#showdiff' ).css( 'font-weight', 'normal' );
+        $( '#reformatted' ).show();
+        $( '#original,#diff' ).hide();
+        return false;
+    } );
+
+    // Original
+    $( '#showoriginal' ).click( function() {
+        $( '#showoriginal' ).css( 'font-weight', 'bold' );
+        $( '#showreformatted,#showdiff' ).css( 'font-weight', 'normal' );
+        $( '#original' ).show();
+        $( '#reformatted,#diff' ).hide();
+        return false;
+    } );
+
+    // Diff
+    $( '#showdiff' ).click( function() {
+        $( '#showdiff' ).css( 'font-weight', 'bold' );
+        $( '#showreformatted,#showoriginal' ).css( 'font-weight', 'normal' );
+        $( '#diff' ).show();
+        $( '#reformatted,#original' ).hide();
+        return false;
+    } );
 } );

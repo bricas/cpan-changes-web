@@ -10,9 +10,15 @@
 <% END %>
 <% ELSE %>
 <p class=success>Congratulations, no errors were found!</p>
-<p>This is what we think your changelog should look like:</p>
-<pre class=result>
-<% release.as_changes_obj.serialize -%>
+<p><strong>Show:</strong> <a href="#" id=showreformatted>Reformatted</a>, <a href="#" id=showoriginal>Original</a>, <a href="#" id=showdiff>Diff</a></p>
+<pre class=result id=reformatted>
+<% reformatted -%>
+</pre>
+<pre class=result id=original>
+<% release.changes_fulltext -%>
+</pre>
+<pre class=result id=diff>
+<% diff -%>
 </pre>
 <p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
 <% END %>

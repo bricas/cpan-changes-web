@@ -1,19 +1,6 @@
 use Try::Tiny;
 
-# From DateTime::Format::W3CDTF
-my $date_re = qr{(\d\d\d\d) # Year
-                 (?:-(\d\d) # -Month
-                 (?:-(\d\d) # -Day
-                 (?:T
-                   (\d\d):(\d\d) # Hour:Minute
-                   (?:
-                     :(\d\d)     # :Second
-                     (\.\d+)?    # .Fractional_Second
-                   )?
-                   ( Z          # UTC
-                   | [+-]\d\d:\d\d    # Hour:Minute TZ offset
-                     (?::\d\d)?       # :Second TZ offset
-                 )?)?)?)?}x;
+use CPAN::Changes;
 
 sub validate_changes {
     my( $release ) = shift;
@@ -56,7 +43,7 @@ sub validate_changes {
 
     # Check all dates
     for( map { $_->date } @releases ) {
-        if ( !$_ or $_ !~ m{^$date_re\s*$} ) {
+        if ( !$_ or $_ !~ m{^${CPAN::Changes::W3CDTF_REGEX}\s*$} ) {
             $release->update(
                 {   failure => sprintf
                         'Changelog release date (%s) does not look like a W3CDTF',

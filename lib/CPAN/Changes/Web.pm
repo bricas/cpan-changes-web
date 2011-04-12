@@ -6,23 +6,9 @@ use XML::Atom::SimpleFeed;
 use HTML::Entities ();
 use CPAN::Changes  ();
 use Try::Tiny;
+use Text::Diff ();
 
 our $VERSION = '0.1';
-
-# From DateTime::Format::W3CDTF
-my $date_re = qr{(\d\d\d\d) # Year
-                 (?:-(\d\d) # -Month
-                 (?:-(\d\d) # -Day
-                 (?:T
-                   (\d\d):(\d\d) # Hour:Minute
-                   (?:
-                     :(\d\d)     # :Second
-                     (\.\d+)?    # .Fractional_Second
-                   )?
-                   ( Z          # UTC
-                   | [+-]\d\d:\d\d    # Hour:Minute TZ offset
-                     (?::\d\d)?       # :Second TZ offset
-                 )?)?)?)?}x;
 
 before sub {
     var scan => schema( 'db' )->resultset( 'Scan' )->first;
@@ -233,12 +219,19 @@ get '/dist/:dist/:version' => sub {
         params->{ version },
         $release->author );
 
-    template 'dist/release',
-        {
+    my %tt = (
         author_uri => uri_for( '/author' ),
         dist_uri   => uri_for( '/dist' ),
         release    => $release,
-        };
+    );
+
+    unless ( $release->failure ) {
+        $tt{ reformatted } = $release->as_changes_obj->serialize;
+        $tt{ diff }        = Text::Diff::diff( \$release->changes_fulltext,
+            \$tt{ reformatted } );
+    }
+
+    template 'dist/release', \%tt;
 };
 
 get '/search' => sub {
@@ -322,7 +315,7 @@ post '/validate' => sub {
 
     # Check all dates
     for ( map { $_->date } @releases ) {
-        if ( !$_ or $_ !~ m{^$date_re\s*$} ) {
+        if ( !$_ or $_ !~ m{^${CPAN::Changes::W3CDTF_REGEX}\s*$} ) {
             return template(
                 'validate/result',
                 {   failure => sprintf
@@ -333,7 +326,14 @@ post '/validate' => sub {
         }
     }
 
-    template( 'validate/result', { changes => $changes } );
+    my $reformatted = $changes->serialize;
+    template(
+        'validate/result',
+        {   original    => $fulltext,
+            reformatted => $reformatted,
+            diff        => Text::Diff::diff( \$fulltext, \$reformatted )
+        }
+    );
 };
 
 get '/recent/feed' => sub {

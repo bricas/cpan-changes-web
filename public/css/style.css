@@ -236,6 +236,10 @@ pre.result {
     margin-bottom: 5px;
 }
 
-#showall {
+#showall, #showreformatted {
     font-weight: bold;
+}
+
+#original, #diff {
+    display: none;
 }
