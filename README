@@ -1,8 +1,5 @@
 Quick-and-dirty guide to running the CPAN::Changes Kwalitee Service app:
 
-NB: Currently, you will need to install CPAN::Mini::Visit from the svn 
-repository: http://svn.ali.as/cpan/trunk/CPAN-Mini-Visit/
-
 1. cpanm --installdeps .
 2. minicpan
 3. ./bin/deploy.pl

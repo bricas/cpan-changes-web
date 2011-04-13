@@ -25,7 +25,7 @@ WriteMakefile(
         'HTML::Entities'               => 0,
         'CPAN::Changes'                => '0.16',
         'CPAN::DistnameInfo'           => 0,
-        'PAN::Mini::Visit'             => 0,
+        'CPAN::Mini::Visit'            => '0.13',
         'Parse::CPAN::Authors'         => 0,
         'Try::Tiny'                    => 0,
         'Text::Diff'                   => 0,
