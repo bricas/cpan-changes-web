@@ -22,6 +22,19 @@
 <% END %>
 </ul>
 <h2>News</h2>
+<h3>April Updates - 2011-04-28</h3>
+<p>Since the last update, there have been 8 releases of CPAN::Changes. A few of those releases included modifications to the way we parse dates. We are now more liberal in what we accept, and the conformance rate has jumped a few more percentage points as a result.</p>
+<p>As for updates to the site:</p>
+<ul>
+    <li>We've removed the "beta" tag from the site.</li>
+    <li>An online <a href="<% request.base %>validate">validator</a> is now available. It also includes links to some other tools for working with changelogs.</li>
+    <li>Every release now has its own page where you can see the differences between the original changelog and our reformatted version.</li>
+    <li>The Atom feeds were fixed up.</li>
+    <li>Pagination was added to the author and distribution listings.</li>
+    <li>Some minor visual updates were done.</li>
+    <li>Author names are now displayed.</li>
+    <li>We've added a very basic JSON endpoint for distributions (<a href="<% request.base %>dist/CPAN-Changes/json">example</a>).</li>
+</ul>
 <h3>Parser updates - 2011-03-29</h3>
 <p>You may have noticed a sharp increase in conformance (from 10% to about 30%). This is because the site has been upgraded to use <a href="http://search.cpan.org/dist/CPAN-Changes-0.09/">CPAN::Changes 0.09</a>, which includes more lenient date parsing code. Although timestamps (a la <code>scalar localtime</code>) are parsed, everyone is encouraged to use W3CDTF dates and the existing tools will continue to only spit out dates in that format.</p>
 <h3>Feeds and other updates - 2011-03-22</h3>
