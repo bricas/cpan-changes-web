@@ -1,6 +1,7 @@
 use Try::Tiny;
 
 use CPAN::Changes;
+use version ();
 
 sub validate_changes {
     my( $release ) = shift;
@@ -31,7 +32,29 @@ sub validate_changes {
         return;
     }
 
-    if ( $latest->version ne $release->version ) {
+    my $latest_ver = _parse_version( $latest->version );
+    if( !defined $latest_ver ) {
+        $release->update(
+            {   failure => sprintf
+                    'Version of most recent changelog (%s) is not a valid version',
+                $latest->version
+            }
+        );
+        return;
+    }
+
+    my $release_ver = _parse_version( $release->version );
+    if( !defined $release_ver ) {
+        $release->update(
+            {   failure => sprintf
+                    'Version of the distribution (%s) is not a valid version',
+                $release->version
+            }
+        );
+        return;
+    }
+
+    if ( $latest_ver != $release_ver ) {
         $release->update(
             {   failure => sprintf
                     'Version of most recent changelog (%s) does not match distribution version (%s)',
@@ -61,6 +84,12 @@ sub validate_changes {
     );
 
     return;
+}
+
+sub _parse_version {
+    my $v = shift;
+    local $SIG{ __WARN__ } = sub {};
+    return eval { version->parse( $v ) };
 }
 
 1;
