@@ -275,10 +275,17 @@ post '/search' => sub {
 
 get '/hof' => sub {
     var title => 'Hall of Fame';
+    my $scan  = vars->{ scan };
+    my $total = $scan->releases->authors->count;
+    my $hof   = $scan->hall_of_fame_authors;
+    my $pass  = $hof->count;
+
     template 'hof/index',
         {
         author_uri => uri_for( '/author' ),
-        authors    => vars->{ scan }->hall_of_fame_authors
+        authors    => $hof,
+        pass       => $pass,
+        percent    => int( $pass / $total * 100 )
         };
 };
 

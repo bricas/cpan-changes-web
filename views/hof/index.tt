@@ -1,6 +1,6 @@
 <h2><% title %></h2>
 
-<p>The following authors are currently at 100% compliance with the CPAN::Changes specification. Cheers!</p>
+<p>There are currently <% pass %> authors (<% percent %>%) at 100% compliance with the CPAN::Changes specification. Cheers!</p>
 
 <% letter = '' %>
 
