@@ -243,3 +243,7 @@ pre.result {
 #original, #diff {
     display: none;
 }
+
+input[type="search"] {
+    -webkit-appearance: textfield;
+}
