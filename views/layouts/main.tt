@@ -34,7 +34,7 @@
             <li><a href="<% request.base %>search">Search</a></li>
             <li><a href="<% request.base %>validate">Validator</a></li>
             <li><a href="<% request.base %>hof">Hall of Fame</a></li>
-            <li><a href="http://search.cpan.org/dist/CPAN-Changes/lib/CPAN/Changes/Spec.pod">CPAN::Changes Spec</a></li>
+            <li><a href="http://metacpan.org/module/CPAN::Changes::Spec">CPAN::Changes Spec</a></li>
         </ul>
         <div class=clear></div>
     </div>

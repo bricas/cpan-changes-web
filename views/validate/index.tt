@@ -16,7 +16,7 @@ Revision history for perl module Foo::Bar
 </form>
 <h3>Other Tools</h3>
 <ul>
-    <li><a href="http://search.cpan.org/perldoc?Test::CPAN::Changes">Test::CPAN::Changes</a> - Helps you automate the testing of your changelog</li>
-    <li><a href="http://search.cpan.org/dist/Dist-Zilla-Plugin-Test-CPAN-Changes/">Dist::Zilla::Plugin::Test::CPAN::Changes</a> - Integrate Test::CPAN::Changes with your Dist::Zilla-based distribution</li>
-    <li><a href="http://search.cpan.org/dist/Test-CPAN-Changes-ReallyStrict/">Test::CPAN::Changes::ReallyStrict</a> - Tests if your changelog is identical after a round-trip through CPAN::Changes</li>
+    <li><a href="http://metacpan.org/module/Test::CPAN::Changes">Test::CPAN::Changes</a> - Helps you automate the testing of your changelog</li>
+    <li><a href="http://metacpan.org/module/Dist::Zilla::Plugin::Test::CPAN::Changes">Dist::Zilla::Plugin::Test::CPAN::Changes</a> - Integrate Test::CPAN::Changes with your Dist::Zilla-based distribution</li>
+    <li><a href="http://metacpan.org/module/Test::CPAN::Changes::ReallyStrict">Test::CPAN::Changes::ReallyStrict</a> - Tests if your changelog is identical after a round-trip through CPAN::Changes</li>
 </ul>

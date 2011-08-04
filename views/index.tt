@@ -22,32 +22,13 @@
 <% END %>
 </ul>
 <h2>News</h2>
-<h3>April Updates - 2011-04-28</h3>
-<p>Since the last update, there have been 8 releases of CPAN::Changes. A few of those releases included modifications to the way we parse dates. We are now more liberal in what we accept, and the conformance rate has jumped a few more percentage points as a result.</p>
-<p>As for updates to the site:</p>
-<ul>
-    <li>We've removed the "beta" tag from the site.</li>
-    <li>An online <a href="<% request.base %>validate">validator</a> is now available. It also includes links to some other tools for working with changelogs.</li>
-    <li>Every release now has its own page where you can see the differences between the original changelog and our reformatted version.</li>
-    <li>The Atom feeds were fixed up.</li>
-    <li>Pagination was added to the author and distribution listings.</li>
-    <li>Some minor visual updates were done.</li>
-    <li>Author names are now displayed.</li>
-    <li>We've added a very basic JSON endpoint for distributions (<a href="<% request.base %>dist/CPAN-Changes/json">example</a>).</li>
-</ul>
-<h3>Parser updates - 2011-03-29</h3>
-<p>You may have noticed a sharp increase in conformance (from 10% to about 30%). This is because the site has been upgraded to use <a href="http://search.cpan.org/dist/CPAN-Changes-0.09/">CPAN::Changes 0.09</a>, which includes more lenient date parsing code. Although timestamps (a la <code>scalar localtime</code>) are parsed, everyone is encouraged to use W3CDTF dates and the existing tools will continue to only spit out dates in that format.</p>
-<h3>Feeds and other updates - 2011-03-22</h3>
-<p>A number of site improvements have landed (thanks in part to <a href="https://github.com/hobbestigrou">hobbestigrou</a>!). This includes basic search functionality and iprovements to the dist and author listsings. Furthermore, we now have atom feeds for recent distributions, plus feeds for any given distribution or author.</p>
-<p>The next task will be to lay the framework for updating the content on this site at regular and more frequent intervals. </p>
-<h3>Site Launched - 2011-03-15</h3>
-<p>Everything is still very much in <i>beta</i> mode, but the site is live and working!</p>
+<% PROCESS news.tt %>
 <h2>What is the CPAN::Changes Kwalitee Service?</h2>
-<p>The CPAN::Changes Kwalitee Service was created primarily to help CPAN authors gauge their changelog file compliance against the <a href="http://search.cpan.org/dist/CPAN-Changes/lib/CPAN/Changes/Spec.pod">latest specification</a>.</p>
+<p>The CPAN::Changes Kwalitee Service was created primarily to help CPAN authors gauge their changelog file compliance against the <a href="http://metacpan.org/module/CPAN::Changes::Spec">latest specification</a>.</p>
 <p>It is hoped that this will encourage <a href="<% author_uri %>">authors</a> to update their <a href="<% dist_uri %>">distributions</a> which will allow applications in the CPAN ecosystem to reliably interpret these files.</p>
 <h2>Tell me more.</h2>
 <p>CPAN distributions are generally expected to have a changelog. An overwhelming majority of authors use <code>Changes</code> as the filename (<a href="http://blog.alternation.net/re-changes-filenames">source</a>), however the contents of the file seems to vary more significantly.</p>
-<p>A lot of the things we do when packaging perl modules are the result of common convention that has become standard. With this in mind, <a href="http://search.cpan.org/dist/CPAN-Changes/lib/CPAN/Changes/Spec.pod">a specification</a> for writing changelog files has been created from examining existing files and codifying their common elements. Furthermore, a <a href="http://search.cpan.org/dist/CPAN-Changes/lib/Test/CPAN/Changes.pm">test module</a> has been created to aid in release testing your changelog.</p>
-<p>See the main <a href="http://search.cpan.org/dist/CPAN-Changes/lib/CPAN/Changes.pm">CPAN::Changes documentation</a> for an API to read and write Changes files.</p>
+<p>A lot of the things we do when packaging perl modules are the result of common convention that has become standard. With this in mind, <a href="http://metacpan.org/module/CPAN::Changes::Spec">a specification</a> for writing changelog files has been created from examining existing files and codifying their common elements. Furthermore, a <a href="http://metacpan.org/module/Test::CPAN::Changes">test module</a> has been created to aid in release testing your changelog.</p>
+<p>See the main <a href="http://metacpan.org/module/CPAN::Changes">CPAN::Changes documentation</a> for an API to read and write Changes files.</p>
 <h2>How can I contribute?</h2>
 <p>Any comments, questions, complaints, patches or even just ideas can be emailed to: <a href="mailto:bricas@cpan.org">bricas@cpan.org</a>. If you would like to play with the source code for the project, everything is hosted on <a href="https://github.com/bricas/cpan-changes-web">github</a>.</p>
