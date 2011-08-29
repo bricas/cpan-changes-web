@@ -3,7 +3,7 @@
 <p>A few minor changes have happened to the site:</p>
 <ul>
     <li>Use version.pm to compare release version against the latest changelog version</li>
-    <li>Added basic stats to the <a href="<% request.base %>/hof">HOF page</a> (FYI: almost 1/4 of all CPAN authors are fully compliant)</li>
+    <li>Added basic stats to the <a href="<% request.base %>hof">HOF page</a> (FYI: almost 1/4 of all CPAN authors are fully compliant)</li>
     <li>A few cross-browser issued were fixed (thanks again, hobbestigrou)</li>
     <li>Added links to metacpan.org where needed</li>
 </ul>
