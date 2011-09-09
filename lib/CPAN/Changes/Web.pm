@@ -398,6 +398,10 @@ sub _releases_to_entries {
             },
             updated => $release->dist_timestamp . 'Z',
             id      => $link,
+            author  => {
+                name  => $release->author,
+                email => sprintf( '<%s@cpan.org>', lc $release->author ),
+            },
         );
     }
 }
