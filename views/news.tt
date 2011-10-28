@@ -1,3 +1,5 @@
+<h3>MetaCPAN Highlighting - 2011-10-28</h3>
+<p>Thanks to <a href="https://github.com/rwstauner">Randy Stauner</a>, MetaCPAN now gives Changes files some special highlighting. For example, checkout the <a href="https://metacpan.org/source/BRICAS/CPAN-Changes-0.18/Changes">changelog for CPAN::Changes</a>.</p>
 <h3>Status - 2011-08-04</h3>
 <p>Progress towards parsable changelogs continues at a slow, but steady pace. We've recently hit the 37% mark, and we're only about 175 releases short of moving up another percent.</p>
 <p>A few minor changes have happened to the site:</p>
