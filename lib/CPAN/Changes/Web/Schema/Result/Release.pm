@@ -6,6 +6,7 @@ use warnings;
 use base qw( DBIx::Class );
 
 use CPAN::Changes;
+use Text::Diff ();
 
 __PACKAGE__->load_components( qw( TimeStamp Core ) );
 __PACKAGE__->table( 'release' );
@@ -83,6 +84,27 @@ __PACKAGE__->might_have(
 
 sub as_changes_obj {
     return CPAN::Changes->load_string( shift->changes_fulltext );
+}
+
+sub text_diff_from {
+    my $self = shift;
+    my $prev = shift;
+
+    if( !$prev ) {
+        my $rs = $self->result_source->schema->resultset( 'Release' );
+        $prev  = $rs->search(
+            {
+                distribution => $self->distribution,
+                version => { '!=' => $self->version } },
+            { order_by => 'ctime desc' }
+        )->first;
+    }
+
+    return '' unless $prev;
+    my $from = $prev->changes_fulltext || '';
+    my $to = $self->changes_fulltext || ''; 
+
+    return Text::Diff::diff( \$from, \$to );
 }
 
 1;

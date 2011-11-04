@@ -10,11 +10,11 @@ use Text::Diff ();
 
 our $VERSION = '0.1';
 
-before sub {
+hook before => sub {
     var scan => schema( 'db' )->resultset( 'Scan' )->first;
 };
 
-before_template sub {
+hook before_template => sub {
     my $tokens = shift;
     $tokens->{ scan } = vars->{ scan };
     $tokens->{ title } ||= vars->{ title } || '';
@@ -369,11 +369,18 @@ sub _releases_to_entries {
     $releases->reset;
 
     while ( my $release = $releases->next ) {
-        my $tmpl
-            = $release->failure
-            ? '<pre style="color:red">ERROR: %s</pre>'
-            : '<pre>%s</pre>';
-        my $link = uri_for(
+        my( $tmpl, @args );
+        if( $release->failure ) {
+            $tmpl = '<pre style="color:red">ERROR: %s</pre><p>Diff from previous:</p><pre>%s</pre>';
+            @args = ( $release->failure, $release->text_diff_from() );
+        }
+        else {
+            $tmpl = '<pre>%s</pre>';
+            @args = $release->changes_for_release || '';
+        }
+
+        my $content = sprintf( $tmpl, map { HTML::Entities::encode_entities $_ } @args );
+        my $link    = uri_for(
             '/'
                 . join(
                 '/', 'dist', $release->distribution, $release->version
@@ -387,14 +394,7 @@ sub _releases_to_entries {
             link    => $link,
             summary => {
                 type    => 'html',
-                content => sprintf(
-                    $tmpl,
-                    HTML::Entities::encode_entities(
-                               $release->failure
-                            || $release->changes_for_release
-                            || ''
-                    )
-                )
+                content => $content,
             },
             updated => $release->dist_timestamp . 'Z',
             id      => $link,
