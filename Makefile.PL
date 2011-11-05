@@ -16,6 +16,7 @@ WriteMakefile(
         'YAML'       => 0,
         'Dancer'     => 1.3020, # required for ':script'
         # App requirements
+        'CPAN::Meta'                   => 0,
         'Dancer::Plugin::DBIC'         => 0,
         'DBIx::Class'                  => 0,
         'Template'                     => 0,

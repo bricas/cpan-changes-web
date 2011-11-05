@@ -15,6 +15,7 @@ use CPAN::Changes;
 use CPAN::Mini::Visit;
 use CPAN::DistnameInfo;
 use Getopt::Long;
+use CPAN::Meta;
 
 GetOptions(
     'resume|r'       => \my $resume,
@@ -40,7 +41,7 @@ my $counter = 0;
 
 CPAN::Mini::Visit->new(
     minicpan   => $minicpan || undef,
-    callback   => \&parse_changelogs,
+    callback   => \&parse_dist,
     ignore     => [ \&skip_existing ],
     prefer_bin => 1,
     %visitopts,
@@ -71,8 +72,13 @@ sub skip_existing {
     return ( !$exists || $force ) ? 0 : 1;
 }
 
-sub parse_changelogs {
+sub parse_dist {
     my $job = shift;
+
+    my ( $metafile ) = glob( 'META.*' );
+    if( $metafile && ( my $meta = eval { CPAN::Meta->load_file( $metafile ) } ) ) {
+        $release->abstract( $meta->abstract );
+    }    
 
     if ( !-f 'Changes' ) {
         $release->update( { failure => 'No "Changes" file found.' } );

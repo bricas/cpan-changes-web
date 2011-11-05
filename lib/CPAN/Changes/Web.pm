@@ -370,6 +370,7 @@ sub _releases_to_entries {
 
     while ( my $release = $releases->next ) {
         my( $tmpl, @args );
+
         if( $release->failure ) {
             $tmpl = '<pre style="color:red">ERROR: %s</pre><p>Diff from previous:</p><pre>%s</pre>';
             @args = ( $release->failure, $release->text_diff_from() );
@@ -380,6 +381,11 @@ sub _releases_to_entries {
         }
 
         my $content = sprintf( $tmpl, map { HTML::Entities::encode_entities $_ } @args );
+
+        if( my $abstract = $release->abstract ) {
+            $content = sprintf( '<p>%s</p>', HTML::Entities::encode_entities $abstract ) . $content;
+        }
+
         my $link    = uri_for(
             '/'
                 . join(
