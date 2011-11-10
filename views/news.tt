@@ -1,3 +1,4 @@
+<h2>News<% UNLESS show_all %> (<a href="<% request.base %>news">archive</a>)<% END %></h2>
 <h3>MetaCPAN Highlighting - 2011-10-28</h3>
 <p>Thanks to <a href="https://github.com/rwstauner">Randy Stauner</a>, MetaCPAN now gives Changes files some special highlighting. For example, checkout the <a href="https://metacpan.org/source/BRICAS/CPAN-Changes-0.18/Changes">changelog for CPAN::Changes</a>.</p>
 <h3>Status - 2011-08-04</h3>
@@ -9,6 +10,8 @@
     <li>A few cross-browser issued were fixed (thanks again, hobbestigrou)</li>
     <li>Added links to metacpan.org where needed</li>
 </ul>
+
+<% IF show_all %>
 <h3>April Updates - 2011-04-28</h3>
 <p>Since the last update, there have been 8 releases of CPAN::Changes. A few of those releases included modifications to the way we parse dates. We are now more liberal in what we accept, and the conformance rate has jumped a few more percentage points as a result.</p>
 <p>As for updates to the site:</p>
@@ -29,3 +32,4 @@
 <p>The next task will be to lay the framework for updating the content on this site at regular and more frequent intervals. </p>
 <h3>Site Launched - 2011-03-15</h3>
 <p>Everything is still very much in <i>beta</i> mode, but the site is live and working!</p>
+<% END %>

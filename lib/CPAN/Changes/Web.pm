@@ -40,6 +40,11 @@ get '/' => sub {
         };
 };
 
+get '/news' => sub {
+    var title => 'News';
+    template 'news', { show_all => 1 };
+};
+
 get '/author' => sub {
     var title => 'Authors';
     template 'author/index',

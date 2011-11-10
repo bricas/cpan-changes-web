@@ -21,7 +21,6 @@
     <li><span class=status>[<% IF !release.failure %>PASS]<% ELSE %>FAIL]<% END %></span> <a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% request.base %>author/<% release.author %>"><% release.author %></a> </li>
 <% END %>
 </ul>
-<h2>News</h2>
 <% PROCESS news.tt %>
 <h2>What is the CPAN::Changes Kwalitee Service?</h2>
 <p>The CPAN::Changes Kwalitee Service was created primarily to help CPAN authors gauge their changelog file compliance against the <a href="http://metacpan.org/module/CPAN::Changes::Spec">latest specification</a>.</p>

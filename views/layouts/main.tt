@@ -29,6 +29,7 @@
     <div id=menu>
         <ul>
             <li><a href="<% request.base %>">Home</a></li>
+            <li><a href="<% request.base %>news">News</a></li>
             <li><a href="<% request.base %>dist">Distributions</a></li>
             <li><a href="<% request.base %>author">Authors</a></li>
             <li><a href="<% request.base %>search">Search</a></li>
