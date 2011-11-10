@@ -1,4 +1,10 @@
 <h2>News<% UNLESS show_all %> (<a href="<% request.base %>news">archive</a>)<% END %></h2>
+<h3>Feed improvements - 2011-11-10</h3>
+<p>A couple of updates to the <a href="<% request.base %>recent/feed">recent releases feed</a> have gone live:</p>
+<ul>
+    <li>Show a unified diff when there is an error parsing the changelog</li>
+    <li>Display the abstract for each release (also shown on distribution and release pages)</li>
+</ul>
 <h3>MetaCPAN Highlighting - 2011-10-28</h3>
 <p>Thanks to <a href="https://github.com/rwstauner">Randy Stauner</a>, MetaCPAN now gives Changes files some special highlighting. For example, checkout the <a href="https://metacpan.org/source/BRICAS/CPAN-Changes-0.18/Changes">changelog for CPAN::Changes</a>.</p>
 <h3>Status - 2011-08-04</h3>
