@@ -87,6 +87,11 @@ __PACKAGE__->might_have(
     { 'foreign.id' => 'self.author' }
 );
 
+sub status_text {
+    my $self = shift;
+    return $self->failure ? 'fail' : 'pass';
+}
+
 sub as_changes_obj {
     return CPAN::Changes->load_string( shift->changes_fulltext );
 }

@@ -18,7 +18,7 @@
 <h2>Recent Releases (<a href="<% request.base %>recent/feed">feed</a>)</h2>
 <ul>
 <% WHILE( release = recent_releases.next ) %>
-    <li><span class=status>[<% IF !release.failure %>PASS]<% ELSE %>FAIL]<% END %></span> <a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% request.base %>author/<% release.author %>"><% release.author %></a> </li>
+    <li><span class=status>[<% release.status_text | upper %>]</span> <a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% request.base %>author/<% release.author %>"><% release.author %></a> </li>
 <% END %>
 </ul>
 <% PROCESS news.tt %>

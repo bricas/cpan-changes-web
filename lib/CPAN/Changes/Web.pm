@@ -401,8 +401,8 @@ sub _releases_to_entries {
         );
 
         $feed->add_entry(
-            title => sprintf( '%s %s (%s)',
-                $release->distribution, $release->version,
+            title => sprintf( '[%s] %s %s (%s)',
+                uc( $release->status_text ), $release->distribution, $release->version,
                 $release->author ),
             link    => $link,
             summary => {

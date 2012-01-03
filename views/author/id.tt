@@ -16,8 +16,7 @@
 </div>
 <ul id=releases>
 <% WHILE( release = releases.next ) %>
-<% SET status = release.failure ? 'fail' : 'pass' %>
-    <li class=<% status %>><span class=status>[<% status | upper %>]</span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+    <li class=<% release.status_text  %>><span class=status>[<% release.status_text | upper %>]</span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
 </ul>
