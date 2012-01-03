@@ -251,8 +251,9 @@ post '/search' => sub {
         var title => 'Search Distributions';
         template 'dist/index',
             {
-            dist_uri      => uri_for( '/dist' ),
-            distributions => [
+            entries_per_page => 250,
+            dist_uri         => uri_for( '/dist' ),
+            distributions    => [
                 vars->{ scan }->releases(
                     { distribution => { 'like', "%$search%" } },
                     {   group_by => 'distribution',
@@ -266,8 +267,9 @@ post '/search' => sub {
         var title => 'Search Authors';
         template 'author/index',
             {
-            author_uri => uri_for( '/author' ),
-            authors    => vars->{ scan }->releases->authors->search_rs(
+            entries_per_page => 250,
+            author_uri       => uri_for( '/author' ),
+            authors          => vars->{ scan }->releases->authors->search_rs(
                 {   -or => {
                         'author_info.id'   => { 'like', "%$search%" },
                         'author_info.name' => { 'like', "%$search%" },
