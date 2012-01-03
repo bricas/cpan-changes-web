@@ -16,6 +16,7 @@ hook before => sub {
 
 hook before_template => sub {
     my $tokens = shift;
+    $tokens->{ self_uri } = URI->new_abs( request->uri, request->base );
     $tokens->{ scan } = vars->{ scan };
     $tokens->{ title } ||= vars->{ title } || '';
 };
@@ -241,17 +242,19 @@ get '/dist/:dist/:version' => sub {
 
 get '/search' => sub {
     var title => 'Search';
-    template 'search/index', {};
-};
 
-post '/search' => sub {
     my $search = params->{ q };
+
+    if( !$search ) {
+        return template 'search/index', {};
+    }
 
     if ( params->{ t } eq 'dist' ) {
         var title => 'Search Distributions';
         template 'dist/index',
             {
             entries_per_page => 250,
+            current_page     => params->{ page },
             dist_uri         => uri_for( '/dist' ),
             distributions    => [
                 vars->{ scan }->releases(
@@ -268,6 +271,7 @@ post '/search' => sub {
         template 'author/index',
             {
             entries_per_page => 250,
+            current_page     => params->{ page },
             author_uri       => uri_for( '/author' ),
             authors          => vars->{ scan }->releases->authors->search_rs(
                 {   -or => {

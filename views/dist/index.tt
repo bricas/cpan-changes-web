@@ -2,8 +2,8 @@
 
 <h2><% title %></h2>
 
-<form name="search" action="/search" method='post'>
-    <input type="search"  results=10 name="q" placeholder="Search Distributions..." /> <input type="submit" value="Search" />
+<form name="search" action="/search" method="get">
+    <input type="search" name="q" placeholder="Search Distributions..." /> <input type="submit" value="Search" />
     <input type="hidden" name="t" value="dist" />
 </form>
 
