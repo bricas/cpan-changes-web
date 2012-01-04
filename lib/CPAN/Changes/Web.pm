@@ -260,7 +260,7 @@ get '/search' => sub {
                 vars->{ scan }->releases(
                     { distribution => { 'like', "%$search%" } },
                     {   group_by => 'distribution',
-                        order_by => 'distribution'
+                        order_by => 'lower(distribution)'
                     }
                     )->get_column( 'distribution' )->all
             ]
