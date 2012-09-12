@@ -1,5 +1,10 @@
 <h2>News<% UNLESS show_all %> (<a href="<% request.base %>news">archive</a>)<% END %></h2>
 
+<h3>10,000 - 2012-09-12</h3>
+<p>We've hit a bit of milestone: 10,000 readable changelogs!</p>
+<p>We're still about 1.5% shy of 40% compliance (out of slightly over 26,000 releases). We have a ways to go yet, but we've seen a steady increase over the first year-and-a-half of this project's existence.</p>
+
+<% IF show_all %>
 <h3>Feed improvements - 2011-11-10</h3>
 <p>A couple of updates to the <a href="<% request.base %>recent/feed">recent releases feed</a> have gone live:</p>
 <ul>
@@ -7,7 +12,6 @@
     <li>Display the abstract for each release (also shown on distribution and release pages)</li>
 </ul>
 
-<% IF show_all %>
 <h3>MetaCPAN Highlighting - 2011-10-28</h3>
 <p>Thanks to <a href="https://github.com/rwstauner">Randy Stauner</a>, MetaCPAN now gives Changes files some special highlighting. For example, checkout the <a href="https://metacpan.org/source/BRICAS/CPAN-Changes-0.18/Changes">changelog for CPAN::Changes</a>.</p>
 
