@@ -15,7 +15,6 @@ __PACKAGE__->add_columns(
     },
     run_date => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
     },
     cpan_changes_version => {

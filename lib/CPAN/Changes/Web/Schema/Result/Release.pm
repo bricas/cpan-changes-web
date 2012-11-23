@@ -59,12 +59,10 @@ __PACKAGE__->add_columns(
     },
     ctime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
     },
     mtime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
         set_on_update => 1,
     },

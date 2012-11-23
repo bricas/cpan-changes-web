@@ -10,7 +10,7 @@ __PACKAGE__->table( 'author' );
 __PACKAGE__->add_columns(
     id => {
         data_type   => 'varchar',
-        varchar     => 50,
+        size        => 50,
         is_nullable => 0,
     },
     name => {
@@ -25,12 +25,10 @@ __PACKAGE__->add_columns(
     },
     ctime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
     },
     mtime => {
-        data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
+        data_type     => 'timestamp',
         set_on_create => 1,
         set_on_update => 1,
     },
