@@ -18,17 +18,17 @@ __PACKAGE__->add_columns(
     },
     distribution => {
         data_type   => 'varchar',
-        size        => 512,
+        size        => 180,
         is_nullable => 0,
     },
     author => {
         data_type   => 'varchar',
-        size        => 512,
+        size        => 50,
         is_nullable => 0,
     },
     version => {
         data_type   => 'varchar',
-        size        => 128,
+        size        => 25,
         is_nullable => 0,
     },
     dist_timestamp => {
@@ -36,7 +36,7 @@ __PACKAGE__->add_columns(
         is_nullable => 0,
     },
     abstract => {
-        data_type   => 'varchar',
+        data_type   => 'text',
         size        => 1024,
         is_nullable => 1,
     },
