@@ -9,9 +9,9 @@ __PACKAGE__->load_components( qw( TimeStamp Core ) );
 __PACKAGE__->table( 'author' );
 __PACKAGE__->add_columns(
     id => {
-        data_type         => 'varchar',
-        is_auto_increment => 50,
-        is_nullable       => 0,
+        data_type   => 'varchar',
+        varchar     => 50,
+        is_nullable => 0,
     },
     name => {
         data_type   => 'varchar',
