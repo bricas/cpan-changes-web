@@ -9,9 +9,9 @@ __PACKAGE__->load_components( qw( TimeStamp Core ) );
 __PACKAGE__->table( 'author' );
 __PACKAGE__->add_columns(
     id => {
-        data_type         => 'varchar',
-        is_auto_increment => 50,
-        is_nullable       => 0,
+        data_type   => 'varchar',
+        size        => 50,
+        is_nullable => 0,
     },
     name => {
         data_type   => 'varchar',
@@ -25,12 +25,10 @@ __PACKAGE__->add_columns(
     },
     ctime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
     },
     mtime => {
-        data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
+        data_type     => 'timestamp',
         set_on_create => 1,
         set_on_update => 1,
     },
