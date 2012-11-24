@@ -9,7 +9,7 @@ use CPAN::Changes;
 use Text::Diff ();
 
 __PACKAGE__->load_components( qw( TimeStamp Core ) );
-__PACKAGE__->table( 'release' );
+__PACKAGE__->table( 'distribution_release' );
 __PACKAGE__->add_columns(
     id => {
         data_type         => 'bigint',
