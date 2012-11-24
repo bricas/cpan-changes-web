@@ -28,7 +28,9 @@ __PACKAGE__->resultset_attributes( { order_by => [ 'run_date DESC' ] } );
 
 __PACKAGE__->has_many( scan_release_joins =>
         'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' => 'scan_id' );
-__PACKAGE__->many_to_many( releases => 'scan_release_joins' => 'release' );
+__PACKAGE__->many_to_many(
+    releases => 'scan_release_joins' => 'distribution_release'
+);
 
 sub hall_of_fame_authors {
     my $self = shift;

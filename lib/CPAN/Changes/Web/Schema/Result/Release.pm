@@ -80,10 +80,11 @@ __PACKAGE__->has_many( scan_release_joins =>
         'release_id' );
 __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
 
-__PACKAGE__->might_have(
-    'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
-    { 'foreign.id' => 'self.author' }
-);
+# MySQL is not happy with this constraint.
+# __PACKAGE__->might_have(
+#     'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
+#     { 'foreign.id' => 'self.author' }
+# );
 
 sub status_text {
     my $self = shift;
