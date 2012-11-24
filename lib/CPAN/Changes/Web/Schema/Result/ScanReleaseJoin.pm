@@ -25,7 +25,7 @@ __PACKAGE__->belongs_to(
     'scan_id'
 );
 __PACKAGE__->belongs_to(
-    release => 'CPAN::Changes::Web::Schema::Result::Release',
+    distribution_release => 'CPAN::Changes::Web::Schema::Result::Release',
     'release_id'
 );
 
