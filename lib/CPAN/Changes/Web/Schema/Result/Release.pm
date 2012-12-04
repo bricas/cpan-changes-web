@@ -37,7 +37,6 @@ __PACKAGE__->add_columns(
     },
     abstract => {
         data_type   => 'text',
-        size        => 1024,
         is_nullable => 1,
     },
     changes_fulltext => {
