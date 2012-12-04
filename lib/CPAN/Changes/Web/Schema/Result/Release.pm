@@ -9,7 +9,7 @@ use CPAN::Changes;
 use Text::Diff ();
 
 __PACKAGE__->load_components( qw( TimeStamp Core ) );
-__PACKAGE__->table( 'release' );
+__PACKAGE__->table( 'distribution_release' );
 __PACKAGE__->add_columns(
     id => {
         data_type         => 'bigint',
@@ -18,17 +18,17 @@ __PACKAGE__->add_columns(
     },
     distribution => {
         data_type   => 'varchar',
-        size        => 512,
+        size        => 180,
         is_nullable => 0,
     },
     author => {
         data_type   => 'varchar',
-        size        => 512,
+        size        => 50,
         is_nullable => 0,
     },
     version => {
         data_type   => 'varchar',
-        size        => 128,
+        size        => 25,
         is_nullable => 0,
     },
     dist_timestamp => {
@@ -36,7 +36,7 @@ __PACKAGE__->add_columns(
         is_nullable => 0,
     },
     abstract => {
-        data_type   => 'varchar',
+        data_type   => 'text',
         size        => 1024,
         is_nullable => 1,
     },
@@ -59,12 +59,10 @@ __PACKAGE__->add_columns(
     },
     ctime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
     },
     mtime => {
         data_type     => 'datetime',
-        default_value => \'CURRENT_TIMESTAMP',
         set_on_create => 1,
         set_on_update => 1,
     },
@@ -72,8 +70,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key( 'id' );
 
 # "COLLATE NOCASE" is an SQLite-ism
-__PACKAGE__->resultset_attributes(
-    { order_by => [ 'distribution COLLATE NOCASE' ] } );
+# __PACKAGE__->resultset_attributes(
+#     { order_by => [ 'distribution COLLATE NOCASE' ] } );
 __PACKAGE__->add_unique_constraint(
     release_key => [ qw( distribution author version ) ], );
 
@@ -82,10 +80,11 @@ __PACKAGE__->has_many( scan_release_joins =>
         'release_id' );
 __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
 
-__PACKAGE__->might_have(
-    'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
-    { 'foreign.id' => 'self.author' }
-);
+# MySQL is not happy with this constraint.
+# __PACKAGE__->might_have(
+#     'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
+#     { 'foreign.id' => 'self.author' }
+# );
 
 sub status_text {
     my $self = shift;
