@@ -75,15 +75,14 @@ __PACKAGE__->add_unique_constraint(
     release_key => [ qw( distribution author version ) ], );
 
 __PACKAGE__->has_many( scan_release_joins =>
-        'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' =>
-        'release_id' );
+    'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' =>
+    'release_id' );
 __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
 
-# MySQL is not happy with this constraint.
-# __PACKAGE__->might_have(
-#     'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
-#     { 'foreign.id' => 'self.author' }
-# );
+__PACKAGE__->might_have(
+    'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
+    { 'foreign.id' => 'self.author' }
+);
 
 sub status_text {
     my $self = shift;
