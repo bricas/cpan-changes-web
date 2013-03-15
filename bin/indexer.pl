@@ -16,7 +16,6 @@ use CPAN::Mini::Visit;
 use CPAN::DistnameInfo;
 use Getopt::Long;
 use CPAN::Meta;
-use Pod::Strip;
 
 GetOptions(
     'resume|r'       => \my $resume,
