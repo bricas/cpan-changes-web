@@ -16,6 +16,7 @@ use CPAN::Mini::Visit;
 use CPAN::DistnameInfo;
 use Getopt::Long;
 use CPAN::Meta;
+use Pod::Strip;
 
 GetOptions(
     'resume|r'       => \my $resume,
@@ -77,7 +78,7 @@ sub parse_dist {
 
     my ( $metafile ) = glob( 'META.*' );
     if( $metafile && ( my $meta = eval { CPAN::Meta->load_file( $metafile ) } ) ) {
-        $release->abstract( $meta->abstract );
+        $release->abstract( strip_pod( $meta->abstract ) );
     }    
 
     if ( !-f 'Changes' ) {
@@ -88,6 +89,14 @@ sub parse_dist {
     $release->changes_fulltext( slurp( 'Changes' ) );
 
     validate_changes( $release );
+}
+
+# From MetaCPAN::Util
+sub strip_pod {
+    my $pod = shift;
+    $pod =~ s/L<([^\/]*?)\/([^\/]*?)>/$2 in $1/g;
+    $pod =~ s/\w<(.*?)(\|.*?)?>/$1/g;
+    return $pod;
 }
 
 sub slurp {
