@@ -11,7 +11,7 @@ use Text::Diff ();
 our $VERSION = '0.1';
 
 hook before => sub {
-    var scan => schema( 'db' )->resultset( 'Scan' )->first;
+    var scan => schema( 'db' )->resultset( 'Scan' )->search( { is_running => 0 } )->first;
 };
 
 hook before_template => sub {

@@ -48,6 +48,13 @@ CPAN::Mini::Visit->new(
 )->run;
 
 print "\n";
+print "Cleaning old scans...";
+
+$schema->resultset( 'Scan' )->search( { id => { '!=' => $scan->id } } )->delete_all;
+
+print "Done\n";
+
+$scan->update( { is_running => 0 } );
 
 sub skip_existing {
     my $job = shift;

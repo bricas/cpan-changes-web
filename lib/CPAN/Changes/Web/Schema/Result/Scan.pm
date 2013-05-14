@@ -17,6 +17,11 @@ __PACKAGE__->add_columns(
         data_type     => 'datetime',
         set_on_create => 1,
     },
+    is_running => {
+        data_type     => 'boolean',
+        default_value => 1,
+        is_nullable   => 0,
+    },
     cpan_changes_version => {
         data_type   => 'varchar',
         size        => 64,
