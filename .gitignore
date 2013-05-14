@@ -12,3 +12,4 @@ MANIFEST*
 *.bak
 README
 *.tar.gz
+environments/production.yml
