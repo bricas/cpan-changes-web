@@ -71,7 +71,20 @@ sub skip_existing {
     );
 
     my $exists = $release->in_storage;
-    $release->insert if !$exists;
+
+    if( !$exists ) {
+        $release->insert;
+        my $prev = $release_rs->search(
+            {
+                distribution => $release->distribution,
+                version => { '!=' => $release->version } },
+            { order_by => 'ctime desc' }
+        )->first;
+
+        if( $prev ) {
+            $release->update( { previous_changes_fulltext => $prev->changes_fulltext } );
+        }
+    }
 
     # use eval to ignore possible errors via resume or forced reparsing
     eval { $scan->add_to_releases( $release ); };

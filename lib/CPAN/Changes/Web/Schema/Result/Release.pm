@@ -43,6 +43,10 @@ __PACKAGE__->add_columns(
         data_type   => 'text',
         is_nullable => 1,
     },
+    previous_changes_fulltext => {
+        data_type   => 'text',
+        is_nullable => 1,
+    },
     changes_release_date => {
         data_type   => 'varchar',
         size        => 64,
@@ -95,21 +99,8 @@ sub as_changes_obj {
 
 sub text_diff_from {
     my $self = shift;
-    my $prev = shift;
-
-    if( !$prev ) {
-        my $rs = $self->result_source->schema->resultset( 'Release' );
-        $prev  = $rs->search(
-            {
-                distribution => $self->distribution,
-                version => { '!=' => $self->version } },
-            { order_by => 'ctime desc' }
-        )->first;
-    }
-
-    return '' unless $prev;
-    my $from = $prev->changes_fulltext || '';
-    my $to = $self->changes_fulltext || ''; 
+    my $from = shift || $self->previous_changes_fulltext;
+    my $to   = $self->changes_fulltext || ''; 
 
     return Text::Diff::diff( \$from, \$to );
 }
