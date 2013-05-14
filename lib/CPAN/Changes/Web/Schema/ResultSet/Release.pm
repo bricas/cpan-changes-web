@@ -19,6 +19,8 @@ sub recent {
     return shift->search(
         {   dist_timestamp => {
                 '>=',
+                # SQLite-ism
+                # \q((SELECT strftime('%Y-%m-%d', MAX( dist_timestamp )) FROM distribution_release))
                 \q((SELECT DATE_FORMAT(MAX(dist_timestamp), '%Y-%m-%d') FROM distribution_release))
             }
         },
