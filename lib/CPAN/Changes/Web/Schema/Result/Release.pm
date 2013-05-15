@@ -85,7 +85,8 @@ __PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
 
 __PACKAGE__->might_have(
     'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',
-    { 'foreign.id' => 'self.author' }
+    { 'foreign.id' => 'self.author' },
+    { is_foreign_key_constraint => 0 },
 );
 
 sub status_text {
