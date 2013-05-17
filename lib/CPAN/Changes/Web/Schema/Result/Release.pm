@@ -89,6 +89,11 @@ __PACKAGE__->might_have(
     { is_foreign_key_constraint => 0 },
 );
 
+sub sqlt_deploy_hook {
+    my( $self, $sqlt_table ) = @_;
+    $sqlt_table->add_index( name => 'author_index', fields => [ 'author' ] );
+}
+
 sub status_text {
     my $self = shift;
     return $self->failure ? 'fail' : 'pass';
