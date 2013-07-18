@@ -1,5 +1,8 @@
 <h2>News<% UNLESS show_all %> (<a href="<% request.base %>news">archive</a>)<% END %></h2>
 
+<h3>Questhub Stencil - 2013-07-17</h3>
+<p><a href="https://twitter.com/neilbowers">Neil Bowers</a> has created a stencil for CPAN::Changes on Questhub. <a href="http://questhub.io/realm/perl/stencil/51e7022f7deb5b752c000004">Check it out!</a></p>
+
 <h3>10,000 - 2012-09-12</h3>
 <p>We've hit a bit of milestone: 10,000 readable changelogs!</p>
 <p>We're still about 1.5% shy of 40% compliance (out of slightly over 26,000 releases). We have a ways to go yet, but we've seen a steady increase over the first year-and-a-half of this project's existence.</p>
