@@ -92,6 +92,7 @@ get '/author/:id' => sub {
 get '/author/:id/feed' => sub {
     my $releases = vars->{ scan }->releases( { author => params->{ id } },
         { order_by => 'dist_timestamp DESC' } );
+    $releases = _handle_feed_filter( $releases );
 
     if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
@@ -165,6 +166,7 @@ get '/dist/:dist' => sub {
 get '/dist/:dist/feed' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
+    $releases = _handle_feed_filter( $releases );
 
     if ( !$releases->count ) {
         return send_error( 'Not Found', 404 );
@@ -356,6 +358,7 @@ post '/validate' => sub {
 
 get '/recent/feed' => sub {
     my $releases = vars->{ scan }->releases->recent;
+    $releases = _handle_feed_filter( $releases );
 
     my $feed = XML::Atom::SimpleFeed->new(
         title   => 'Recent Releases',
@@ -373,6 +376,21 @@ get '/recent/feed' => sub {
     content_type( 'application/atom+xml' );
     return $feed->as_string;
 };
+
+sub _handle_feed_filter {
+    my( $rs ) = @_;
+
+    return $rs unless my $filter = params->{ filter };
+
+    if( $filter eq 'fail' ) {
+        $rs = $rs->failures;
+    }
+    elsif( $filter eq 'pass' ) {
+        $rs = $rs->passes;
+    }
+
+    return $rs;
+}
 
 sub _releases_to_entries {
     my ( $feed, $releases ) = @_;
