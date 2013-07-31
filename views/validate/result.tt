@@ -6,13 +6,13 @@
 <p class=success>&#10003; Congratulations, no errors were found!</p>
 <p><strong>Show:</strong> <a href="#" id=showreformatted>Reformatted</a>, <a href="#" id=showoriginal>Original</a>, <a href="#" id=showdiff>Diff</a></p>
 <pre class=result id=reformatted>
-<% reformatted -%>
+<% reformatted | html -%>
 </pre>
 <pre class=result id=original>
-<% original -%>
+<% original | html -%>
 </pre>
 <pre class=result id=diff>
-<% diff -%>
+<% diff | html -%>
 </pre>
 <p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
 <% END %>
