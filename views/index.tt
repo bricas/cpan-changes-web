@@ -15,6 +15,7 @@
         <dd class=progress><% releases_progress %>%</dd>
     </dl>
 </div>
+<p style="font-size: 16px; color: #ffffff; background-color: #f0ad4e; border-color: #eea236;"><strong>NOTICE:</strong> The CPAN::Changes Spec has been updated (<a href="https://metacpan.org/module/BRICAS/CPAN-Changes-0.23/lib/CPAN/Changes/Spec.pod">version 0.03</a>). This site does not yet handle some of the new policies (e.g. "Unknown" release dates), but will be upgraded in the coming weeks.</p>
 <h2>Recent Releases (<a href="<% request.base %>recent/feed">feed</a>)</h2>
 <ul>
 <% WHILE( release = recent_releases.next ) %>
