@@ -132,6 +132,21 @@ get '/dist' => sub {
         };
 };
 
+get '/dist/multiple-releases' => sub {
+    var title => 'Distributions with Multiple Releases';
+
+    template 'dist/index',
+        {
+        dist_uri         => uri_for( '/dist' ),
+        current_page     => params->{ page },
+        entries_per_page => 1000,
+        distributions    => [
+            vars->{ scan }->releases( {}, { group_by => 'distribution', having => "count('distribution') > 1" } )
+                ->get_column( 'distribution' )->all
+        ]
+        };
+};
+
 get '/dist/:dist' => sub {
     my $releases
         = vars->{ scan }->releases( { distribution => params->{ dist } } );
