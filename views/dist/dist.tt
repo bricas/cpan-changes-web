@@ -1,5 +1,5 @@
 <h2><% params.dist %> (<a href="<% request.base %>dist/<% params.dist %>/feed">feed</a>)</h2>
-<p><strong>Abstract:</strong> <% releases.single.abstract | html %></p>
+<p><strong>Abstract:</strong> <% releases.get_column( 'abstract' ).all.last | html %></p>
 <p><strong>Links:</strong> <a href="http://metacpan.org/release/<% params.dist %>">metacpan</a>, <a href="http://search.cpan.org/dist/<% params.dist %>">search.cpan</a></p>
 <p><strong>Show:</strong> <a href="#" id=showall>All</a>, <a href="#" id=showpass>Passes</a>, <a href="#" id=showfail>Fails</a>
 <div id=status>
