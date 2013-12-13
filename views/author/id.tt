@@ -4,8 +4,8 @@
 <div id=status>
     <h3>Status</h3>
     <dl>
-        <dt>Releases</dt>
-        <dd><% releases %></dd>
+        <dt>Distributions</dt>
+        <dd><% dists %></dd>
         <dt>Pass</dt>
         <dd><% pass %></dd>
         <dt>Fail</dt>
@@ -15,7 +15,7 @@
     </dl>
 </div>
 <ul id=releases>
-<% WHILE( release = releases.next ) %>
+<% WHILE( release = dists.next ) %>
     <li class=<% release.status_text  %>><span class=status>[<% release.status_text | upper %>]</span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>

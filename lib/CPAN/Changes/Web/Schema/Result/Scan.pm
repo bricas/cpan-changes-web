@@ -31,17 +31,17 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key( 'id' );
 __PACKAGE__->resultset_attributes( { order_by => [ 'run_date DESC' ] } );
 
-__PACKAGE__->has_many( scan_release_joins =>
-        'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' => 'scan_id' );
+__PACKAGE__->has_many( scan_distribution_joins =>
+        'CPAN::Changes::Web::Schema::Result::ScanDistributionJoin' => 'scan_id' );
 __PACKAGE__->many_to_many(
-    releases => 'scan_release_joins' => 'distribution_release'
+    distributions => 'scan_distribution_joins' => 'distribution'
 );
 
 sub hall_of_fame_authors {
     my $self = shift;
-    my $inner = $self->releases( { failure => { NOT => undef } } );
+    my $inner = $self->distributions( { failure => { NOT => undef } } );
 
-    return $self->releases(
+    return $self->distributions(
         {   author => { 'NOT IN' => $inner->get_column( 'author' )->as_query }
         }
     )->authors;

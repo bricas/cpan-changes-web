@@ -11,7 +11,7 @@ use Text::Diff ();
 our $VERSION = '0.1';
 
 hook before => sub {
-    var scan => schema( 'db' )->resultset( 'Scan' )->search( { is_running => 0 } )->first;
+    var scan => schema( 'db' )->resultset( 'Scan' )->latest;
 };
 
 hook before_template => sub {
@@ -22,22 +22,20 @@ hook before_template => sub {
 };
 
 get '/' => sub {
-    my $releases = vars->{ scan }->releases;
-    my $pass     = $releases->passes->count;
-    my $fail     = $releases->failures->count;
+    my $dists = vars->{ scan }->distributions;
+    my $pass  = $dists->passes->count;
+    my $fail  = $dists->failures->count;
 
     template 'index',
         {
-        dist_uri => uri_for( '/dist' ),
-        dists =>
-            $releases->search( {}, { group_by => 'distribution' } )->count,
-        author_uri => uri_for( '/author' ),
-        authors  => $releases->search( {}, { group_by => 'author' } )->count,
-        releases => $pass + $fail,
-        releases_pass     => $pass,
-        releases_fail     => $fail,
-        releases_progress => int( $pass / ( $pass + $fail ) * 100 ),
-        recent_releases   => scalar $releases->recent,
+        dist_uri        => uri_for( '/dist' ),
+        author_uri      => uri_for( '/author' ),
+        authors         => $dists->search( {}, { group_by => 'author' } )->count,
+        dists           => $pass + $fail,
+        dists_pass      => $pass,
+        dists_fail      => $fail,
+        dists_progress  => int( $pass / ( $pass + $fail ) * 100 ),
+        recent_releases => scalar $dists->recent,
         };
 };
 
@@ -53,27 +51,27 @@ get '/author' => sub {
         author_uri       => uri_for( '/author' ),
         current_page     => params->{ page },
         entries_per_page => 1000,
-        authors          => vars->{ scan }->releases->authors
+        authors          => vars->{ scan }->distributions->authors
         };
 };
 
 get '/author/:id' => sub {
-    my $releases = vars->{ scan }->releases( { author => params->{ id } } );
+    my $dists = vars->{ scan }->distributions( { author => params->{ id } } );
 
-    if ( !$releases->count ) {
+    if ( !$dists->count ) {
         return send_error( 'Not Found', 404 );
     }
 
-    my $pass = $releases->passes->count;
-    my $fail = $releases->failures->count;
+    my $pass = $dists->passes->count;
+    my $fail = $dists->failures->count;
 
-    my $author_info = $releases->authors->first;
+    my $author_info = $dists->authors->first;
 
     var title => $author_info->name;
 
     template 'author/id', {
         dist_uri     => uri_for( '/dist' ),
-        releases     => $releases,
+        dists        => $dists,
         pass         => $pass,
         fail         => $fail,
         progress     => int( $pass / ( $pass + $fail ) * 100 ),
@@ -81,7 +79,7 @@ get '/author/:id' => sub {
         header_links => [
             {   rel   => 'alternate',
                 type  => 'application/atom+xml',
-                title => 'Releases by ' . params->{ id },
+                title => 'Distributions by ' . params->{ id },
                 href  => uri_for( '/author/' . params->{ id } . '/feed' )
             }
             ]
@@ -90,29 +88,29 @@ get '/author/:id' => sub {
 };
 
 get '/author/:id/feed' => sub {
-    my $releases = vars->{ scan }->releases( { author => params->{ id } },
+    my $dists = vars->{ scan }->distributions( { author => params->{ id } },
         { order_by => 'dist_timestamp DESC' } );
-    $releases = _handle_feed_filter( $releases );
+    $dists = _handle_feed_filter( $dists );
 
-    if ( !$releases->count ) {
+    if ( !$dists->count ) {
         return send_error( 'Not Found', 404 );
     }
 
-    my $author_info = $releases->authors->first;
+    my $author_info = $dists->authors->first;
 
     my $feed = XML::Atom::SimpleFeed->new(
-        title => 'Releases by ' . $author_info->name,
+        title => 'Distributions by ' . $author_info->name,
         link  => uri_for( '/' ),
         link  => {
             rel  => 'self',
             href => uri_for( '/author/' . params->{ id } . '/feed' ),
         },
-        updated => $releases->first->dist_timestamp . 'Z',
+        updated => $dists->first->dist_timestamp . 'Z',
         author  => 'CPAN::Changes Kwalitee Service',
         id      => uri_for( '/author/' . params->{ id } . '/feed' ),
     );
 
-    _releases_to_entries( $feed, $releases );
+    _releases_to_entries( $feed, $dists );
 
     content_type( 'application/atom+xml' );
     return $feed->as_string;
@@ -126,61 +124,15 @@ get '/dist' => sub {
         current_page     => params->{ page },
         entries_per_page => 1000,
         distributions    => [
-            vars->{ scan }->releases( {}, { group_by => 'distribution' } )
+            vars->{ scan }->distributions( {}, { group_by => 'distribution' } )
                 ->get_column( 'distribution' )->all
-        ]
-        };
-};
-
-get '/dist/multiple-releases' => sub {
-    var title => 'Distributions with Multiple Releases';
-
-    template 'dist/index',
-        {
-        dist_uri         => uri_for( '/dist' ),
-        current_page     => params->{ page },
-        entries_per_page => 1000,
-        distributions    => [
-            vars->{ scan }->releases( {}, { group_by => 'distribution', having => "count('distribution') > 1" } )
-                ->get_column( 'distribution' )->all
-        ]
-        };
-};
-
-get '/dist/:dist' => sub {
-    my $releases
-        = vars->{ scan }->releases( { distribution => params->{ dist } } );
-
-    if ( !$releases->count ) {
-        return send_error( 'Not Found', 404 );
-    }
-
-    my $pass = $releases->passes->count;
-    my $fail = $releases->failures->count;
-
-    var title => params->{ dist };
-
-    template 'dist/dist',
-        {
-        author_uri   => uri_for( '/author' ),
-        dist_uri     => uri_for( '/dist' ),
-        releases     => $releases,
-        pass         => $pass,
-        fail         => $fail,
-        progress     => int( $pass / ( $pass + $fail ) * 100 ),
-        header_links => [
-            {   rel   => 'alternate',
-                type  => 'application/atom+xml',
-                title => 'Releases for ' . params->{ dist },
-                href  => uri_for( '/dist/' . params->{ dist } . '/feed' )
-            }
         ]
         };
 };
 
 get '/dist/:dist/feed' => sub {
     my $releases
-        = vars->{ scan }->releases( { distribution => params->{ dist } } );
+        = vars->{ scan }->distributions( { distribution => params->{ dist } } );
     $releases = _handle_feed_filter( $releases );
 
     if ( !$releases->count ) {
@@ -208,7 +160,7 @@ get '/dist/:dist/feed' => sub {
 
 get '/dist/:dist/json' => sub {
     my $release
-        = vars->{ scan }->releases( { distribution => params->{ dist } } )
+        = vars->{ scan }->distributions( { distribution => params->{ dist } } )
         ->first;
 
     if ( !$release ) {
@@ -227,11 +179,16 @@ get '/dist/:dist/json' => sub {
 
 };
 
-get '/dist/:dist/:version' => sub {
-    my $release
-        = vars->{ scan }->releases(
-        { distribution => params->{ dist }, version => params->{ version } } )
-        ->first;
+get '/dist/:dist' => \&_show_release;
+get '/dist/:dist/:version?' => \&_show_release;
+
+sub _show_release {
+    my %search = ( distribution => params->{ dist } );
+    if( params->{ version } ) {
+        $search{ version } = params->{ version };
+    }
+
+    my $release = vars->{ scan }->distributions( \%search )->first;
 
     if ( !$release ) {
         return send_error( 'Not Found', 404 );
@@ -239,13 +196,20 @@ get '/dist/:dist/:version' => sub {
 
     var title => sprintf( '%s %s (%s)',
         params->{ dist },
-        params->{ version },
+        $release->version,
         $release->author );
 
     my %tt = (
-        author_uri => uri_for( '/author' ),
-        dist_uri   => uri_for( '/dist' ),
-        release    => $release,
+        author_uri   => uri_for( '/author' ),
+        dist_uri     => uri_for( '/dist' ),
+        release      => $release,
+        header_links => [
+            {   rel   => 'alternate',
+                type  => 'application/atom+xml',
+                title => 'Releases for ' . params->{ dist },
+                href  => uri_for( '/dist/' . params->{ dist } . '/feed' )
+            }
+        ]
     );
 
     unless ( $release->failure ) {
@@ -274,7 +238,7 @@ get '/search' => sub {
             current_page     => params->{ page },
             dist_uri         => uri_for( '/dist' ),
             distributions    => [
-                vars->{ scan }->releases(
+                vars->{ scan }->distributions(
                     { distribution => { 'like', "%$search%" } },
                     {   group_by => 'distribution',
                         order_by => 'lower(distribution)'
@@ -290,7 +254,7 @@ get '/search' => sub {
             entries_per_page => 250,
             current_page     => params->{ page },
             author_uri       => uri_for( '/author' ),
-            authors          => vars->{ scan }->releases->authors->search_rs(
+            authors          => vars->{ scan }->distributions->authors->search_rs(
                 {   -or => {
                         'author_info.id'   => { 'like', "%$search%" },
                         'author_info.name' => { 'like', "%$search%" },
@@ -304,7 +268,7 @@ get '/search' => sub {
 get '/hof' => sub {
     var title => 'Hall of Fame';
     my $scan  = vars->{ scan };
-    my $total = $scan->releases->authors->count;
+    my $total = $scan->distributions->authors->count;
     my $hof   = $scan->hall_of_fame_authors;
     my $pass  = $hof->count;
 
@@ -372,7 +336,7 @@ post '/validate' => sub {
 };
 
 get '/recent/feed' => sub {
-    my $releases = vars->{ scan }->releases->recent;
+    my $releases = vars->{ scan }->distributions->recent;
     $releases = _handle_feed_filter( $releases );
 
     my $feed = XML::Atom::SimpleFeed->new(

@@ -1,4 +1,4 @@
-package CPAN::Changes::Web::Schema::Result::Release;
+package CPAN::Changes::Web::Schema::Result::Distribution;
 
 use strict;
 use warnings;
@@ -78,10 +78,10 @@ __PACKAGE__->set_primary_key( 'id' );
 __PACKAGE__->add_unique_constraint(
     release_key => [ qw( distribution author version ) ], );
 
-__PACKAGE__->has_many( scan_release_joins =>
-    'CPAN::Changes::Web::Schema::Result::ScanReleaseJoin' =>
+__PACKAGE__->has_many( scan_distribution_joins =>
+    'CPAN::Changes::Web::Schema::Result::ScanDistributionJoin' =>
     'release_id' );
-__PACKAGE__->many_to_many( scans => 'scan_release_joins' => 'scan' );
+__PACKAGE__->many_to_many( scans => 'scan_distribution_joins' => 'scan' );
 
 __PACKAGE__->might_have(
     'author_info' => 'CPAN::Changes::Web::Schema::Result::Author',

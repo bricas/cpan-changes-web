@@ -37,6 +37,6 @@ __PACKAGE__->set_primary_key( 'id' );
 __PACKAGE__->resultset_attributes( { order_by => [ 'id' ] } );
 
 __PACKAGE__->has_many(
-    releases => 'CPAN::Changes::Web::Schema::Result::Release' => 'author' );
+    distributions => 'CPAN::Changes::Web::Schema::Result::Distribution' => 'author' );
 
 1;

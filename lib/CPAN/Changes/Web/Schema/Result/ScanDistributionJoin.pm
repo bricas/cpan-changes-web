@@ -1,4 +1,4 @@
-package CPAN::Changes::Web::Schema::Result::ScanReleaseJoin;
+package CPAN::Changes::Web::Schema::Result::ScanDistributionJoin;
 
 use strict;
 use warnings;
@@ -25,7 +25,7 @@ __PACKAGE__->belongs_to(
     'scan_id'
 );
 __PACKAGE__->belongs_to(
-    distribution_release => 'CPAN::Changes::Web::Schema::Result::Release',
+    distribution => 'CPAN::Changes::Web::Schema::Result::Distribution',
     'release_id'
 );
 

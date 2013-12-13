@@ -1,4 +1,4 @@
-package CPAN::Changes::Web::Schema::ResultSet::Release;
+package CPAN::Changes::Web::Schema::ResultSet::Distribution;
 
 use strict;
 use warnings;
@@ -20,8 +20,8 @@ sub recent {
         {   dist_timestamp => {
                 '>=',
                 # SQLite-ism
-                # \q((SELECT strftime('%Y-%m-%d', MAX( dist_timestamp )) FROM distribution_release))
-                \q((SELECT DATE_FORMAT(MAX(dist_timestamp), '%Y-%m-%d') FROM distribution_release))
+                \q((SELECT strftime('%Y-%m-%d', MAX( dist_timestamp )) FROM distribution_release))
+                # \q((SELECT DATE_FORMAT(MAX(dist_timestamp), '%Y-%m-%d') FROM distribution_release))
             }
         },
         { order_by => 'dist_timestamp DESC' }
