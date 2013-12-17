@@ -247,3 +247,11 @@ pre.result {
 input[type="search"] {
     -webkit-appearance: textfield;
 }
+
+.info-box {
+    padding: 3px;
+    font-size: 16px;
+    color: #ffffff;
+    background-color: #f0ad4e;
+    border: 2px solid #eea236;
+}
