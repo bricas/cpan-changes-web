@@ -35,7 +35,7 @@ else {
     $scan->update( { cpan_changes_version => $CPAN::Changes::VERSION } );
 }
 
-my $release_rs = $schema->resultset( 'Release' );
+my $release_rs = $schema->resultset( 'Distribution' );
 my $release;
 my $counter = 0;
 
