@@ -87,7 +87,7 @@ sub skip_existing {
     }
 
     # use eval to ignore possible errors via resume or forced reparsing
-    eval { $scan->add_to_releases( $release ); };
+    eval { $scan->add_to_distributions( $release ); };
 
     return ( !$exists || $force ) ? 0 : 1;
 }
