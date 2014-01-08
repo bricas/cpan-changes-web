@@ -24,7 +24,7 @@ WriteMakefile(
         'DBIx::Class::TimeStamp'        => 0,
         'XML::Atom::SimpleFeed'         => 0,
         'HTML::Entities'                => 0,
-        'CPAN::Changes'                 => '0.16',
+        'CPAN::Changes'                 => '0.27',
         'CPAN::DistnameInfo'            => 0,
         'CPAN::Mini::Visit'             => '0.13',
         'CPAN::Mini::LatestDistVersion' => 0,
