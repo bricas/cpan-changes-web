@@ -45,7 +45,7 @@
     <div id=push></div>
 </div>
 <div id=footer>
-    <p>CPAN::Changes version <% scan.cpan_changes_version %></p>
+    <p>CPAN::Changes version <% scan.cpan_changes_version %> / Spec version 0.04</p>
     <p>Last Updated: <% scan.run_date.ymd %> <% scan.run_date.hms %></p>
 </div>
 <script type="text/javascript">
