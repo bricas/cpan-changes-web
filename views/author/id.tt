@@ -22,7 +22,7 @@
 <% CALL dists.reset %>
 <% WHILE( release = dists.next ) %>
 <% NEXT IF release.status_text != 'pass' %>
-              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %> /<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
                 </ul>
@@ -32,7 +32,7 @@
 <% CALL dists.reset %>
 <% WHILE( release = dists.next ) %>
 <% NEXT IF release.status_text != 'fail' %>
-              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %> /<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
                 </ul>
