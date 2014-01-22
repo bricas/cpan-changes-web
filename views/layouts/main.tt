@@ -42,9 +42,19 @@
     </ul>
     <form class="navbar-form navbar-right" role="search" action="<% request.base %>search" method="get">
       <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search">
+        <input type="text" name="q" class="form-control" placeholder="Search">
       </div>
-      <button type="submit" class="btn btn-default">Submit</button>
+
+      <div class="btn-group" id="nav-search-button">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+          <span class="glyphicon glyphicon-search"></span> Search <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li><a data-name="t" data-value="dist" href="#">Distributions</a></li>
+          <li><a data-name="t" data-value="author" href="#">Authors</a></li>
+        </ul>
+      </div>
+
     </form>
   </div>
 </nav>
@@ -62,6 +72,7 @@
 
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="<% request.base %>js/bootstrap.min.js"></script>
+    <script src="<% request.base %>js/ccks.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-41027231-1']);

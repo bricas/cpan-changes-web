@@ -1,8 +1,22 @@
-<h2>Search</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6">
+            <h2><span class="glyphicon glyphicon-search"></span> Search</h2>
 
-<form name="search" action="/search" method="get">
-    <input type="search" name="q" placeholder="Search..." /> <input type="submit" value="Search" /><br/>
-    <input type="radio" name="t" value="dist" checked="checked" /> Distributions
-    <input type="radio" name="t" value="author" /> Authors
+<form role="search" action="/search" method="get">
+  <div class="form-group">
+    <input type="text" class="form-control" name="q" placeholder="Search">
+  </div>
+  <div class="radio">
+    <label>
+      <input type="radio" name="t" id="t1" value="dist" checked> Distributions</label>
+  </div>
+  <div class="radio">
+    <label>
+      <input type="radio" name="t" id="t2" value="author"> Authors</label>
+  </div>
+  <button type="submit" class="btn btn-default">Search</button>
 </form>
-
+        </div>
+    </div>
+</div>
