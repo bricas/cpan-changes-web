@@ -1,22 +1,24 @@
-<h2><% author_info.name %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-8">
+            <h2><span class="glyphicon glyphicon-user"></span> <% author_info.name %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
 <p><strong>Links:</strong> <a href="http://metacpan.org/author/<% params.id %>">metacpan</a>, <a href="http://search.cpan.org/~<% params.id %>">search.cpan</a></p>
 <p><strong>Show:</strong> <a href="#" id=showall>All</a>, <a href="#" id=showpass>Passes</a>, <a href="#" id=showfail>Fails</a>
-<div id=status>
-    <h3>Status</h3>
-    <dl>
-        <dt>Distributions</dt>
-        <dd><% dists %></dd>
-        <dt>Pass</dt>
-        <dd><% pass %></dd>
-        <dt>Fail</dt>
-        <dd><% fail %></dd>
-        <dt class=progress>Progress</dt>
-        <dd class=progress><% progress %>%</dd>
-    </dl>
-</div>
 <ul id=releases>
 <% WHILE( release = dists.next ) %>
     <li class=<% release.status_text  %>><span class=status>[<% release.status_text | upper %>]</span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
 </ul>
+        </div>
+        <div class="col-xs-4">
+            <h3><span class="glyphicon glyphicon-dashboard"></span> Status</h3>
+            <table class="table table-bordered">
+                <tr><th>Distributions</th><td><% dists %></td></tr>
+                <tr><th>Pass</th><td><% pass %></td></tr>
+                <tr><th>Fail</th><td><% fail %></td></tr>
+                <tr class="progress"><th><span class="glyphicon glyphicon-ok"></span> Progress</th><td><% progress %>%</td></tr>
+            </table>
+        </div>
+    </div>
+</div>

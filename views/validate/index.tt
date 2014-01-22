@@ -1,7 +1,14 @@
-<h2>Validation Tools</h2>
-<h3>Online Validator</h3>
-<form method=post id=validator>
-<textarea name=c>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2><span class="glyphicon glyphicon-cog"></span> Validation Tools</h2>
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3>Online Validator</h3></div>
+              <div class="panel-body">
+
+<form method=post id=validator role=form>
+<div class="form-group">
+    <textarea class="form-control" rows="15" name=c>
 Revision history for perl module Foo::Bar
 
 0.02 2009-07-17
@@ -11,12 +18,20 @@ Revision history for perl module Foo::Bar
 0.01 2009-07-16
 
  - Initial release
-</textarea>
-<input type=submit class=submit value=Validate>
+    </textarea>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-default">Submit</button>
+</div>
 </form>
+            </div>
+          </div>
 <h3>Other Tools</h3>
 <ul>
     <li><a href="http://metacpan.org/module/Test::CPAN::Changes">Test::CPAN::Changes</a> - Helps you automate the testing of your changelog</li>
     <li><a href="http://metacpan.org/module/Dist::Zilla::Plugin::Test::CPAN::Changes">Dist::Zilla::Plugin::Test::CPAN::Changes</a> - Integrate Test::CPAN::Changes with your Dist::Zilla-based distribution</li>
     <li><a href="http://metacpan.org/module/Test::CPAN::Changes::ReallyStrict">Test::CPAN::Changes::ReallyStrict</a> - Tests if your changelog is identical after a round-trip through CPAN::Changes</li>
 </ul>
+        </div>
+    </div>
+</div>

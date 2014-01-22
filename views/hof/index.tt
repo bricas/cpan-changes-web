@@ -1,21 +1,26 @@
-<h2><% title %></h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2><span class="glyphicon glyphicon-star"></span> <% title %></h2>
 
-<p>There are currently <% pass %> authors (<% percent %>%) at 100% compliance with the CPAN::Changes specification. Cheers!</p>
+            <p>There are currently <strong><% pass %></strong> authors (<strong><% percent %>%</strong>) at 100% compliance with the CPAN::Changes specification. Cheers!</p>
 
 <% letter = '' %>
-
-<div id=authors>
 
 <% FOREACH author IN authors.all %>
     <% next_letter = author.id.substr(0, 1) FILTER upper %>
     <% IF letter != next_letter %>
-<% IF letter %></ul><% END %>
+<% IF letter %></ul></div></div><% END %>
         <% letter = next_letter %>
-<h3 class=letter><% letter %></h3>
-<ul class=multicol>
+            <div class="panel panel-default">
+              <div class="panel-heading"><h3><% letter %></h3></div>
+              <div class="panel-body">
+              <ul class="multicol">
     <% END %>
     <li><a href="<% author_uri %>/<% author.id %>"><% author.id %></a><br><% author.name %></li>
 <% END %>
-</ul>
+</ul></div></div>
 
+        </div>
+    </div>
 </div>

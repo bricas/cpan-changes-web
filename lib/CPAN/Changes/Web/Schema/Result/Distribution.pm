@@ -96,6 +96,11 @@ sub status_text {
     return $self->failure ? 'fail' : 'pass';
 }
 
+sub status_icon {
+    my $self = shift;
+    return $self->failure ? 'remove' : 'ok';
+}
+
 sub as_changes_obj {
     return CPAN::Changes->load_string( shift->changes_fulltext );
 }

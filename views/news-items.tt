@@ -1,0 +1,60 @@
+<h3>[2013-12-17] Progress</h3>
+<p>You may have noticed some minor updates around the site:</p>
+<ul>
+    <li>Distributions are now limited to the latest release only.</li>
+    <li>Since releases are 1:1 with distributions, the release stats have been removed and the distribution page now shows the same information as the version specific page.</li>
+</ul>
+<p>We're up to 44% compliance which is about a 5% increase from this time last year.</p>
+
+<h3>[2013-07-17] Questhub Stencil</h3>
+<p><a href="https://twitter.com/neilbowers">Neil Bowers</a> has created a stencil for CPAN::Changes on Questhub. <a href="http://questhub.io/realm/perl/stencil/51e7022f7deb5b752c000004">Check it out!</a></p>
+
+<% IF show_all %>
+<h3>[2012-09-12] 10,000</h3>
+<p>We've hit a bit of milestone: 10,000 readable changelogs!</p>
+<p>We're still about 1.5% shy of 40% compliance (out of slightly over 26,000 releases). We have a ways to go yet, but we've seen a steady increase over the first year-and-a-half of this project's existence.</p>
+
+<h3>[2011-11-10] Feed improvements</h3>
+<p>A couple of updates to the <a href="<% request.base %>recent/feed">recent releases feed</a> have gone live:</p>
+<ul>
+    <li>Show a unified diff when there is an error parsing the changelog</li>
+    <li>Display the abstract for each release (also shown on distribution and release pages)</li>
+</ul>
+
+<h3>[2011-10-28] MetaCPAN Highlighting</h3>
+<p>Thanks to <a href="https://github.com/rwstauner">Randy Stauner</a>, MetaCPAN now gives Changes files some special highlighting. For example, checkout the <a href="https://metacpan.org/source/BRICAS/CPAN-Changes-0.18/Changes">changelog for CPAN::Changes</a>.</p>
+
+<h3>[2011-08-04] Status</h3>
+<p>Progress towards parsable changelogs continues at a slow, but steady pace. We've recently hit the 37% mark, and we're only about 175 releases short of moving up another percent.</p>
+<p>A few minor changes have happened to the site:</p>
+<ul>
+    <li>Use version.pm to compare release version against the latest changelog version</li>
+    <li>Added basic stats to the <a href="<% request.base %>hof">HOF page</a> (FYI: almost 1/4 of all CPAN authors are fully compliant)</li>
+    <li>A few cross-browser issued were fixed (thanks again, hobbestigrou)</li>
+    <li>Added links to metacpan.org where needed</li>
+</ul>
+
+<h3>[2011-04-28] April Updates</h3>
+<p>Since the last update, there have been 8 releases of CPAN::Changes. A few of those releases included modifications to the way we parse dates. We are now more liberal in what we accept, and the conformance rate has jumped a few more percentage points as a result.</p>
+<p>As for updates to the site:</p>
+<ul>
+    <li>We've removed the "beta" tag from the site.</li>
+    <li>An online <a href="<% request.base %>validate">validator</a> is now available. It also includes links to some other tools for working with changelogs.</li>
+    <li>Every release now has its own page where you can see the differences between the original changelog and our reformatted version.</li>
+    <li>The Atom feeds were fixed up.</li>
+    <li>Pagination was added to the author and distribution listings.</li>
+    <li>Some minor visual updates were done.</li>
+    <li>Author names are now displayed.</li>
+    <li>We've added a very basic JSON endpoint for distributions (<a href="<% request.base %>dist/CPAN-Changes/json">example</a>).</li>
+</ul>
+
+<h3>[2011-03-29] Parser updates</h3>
+<p>You may have noticed a sharp increase in conformance (from 10% to about 30%). This is because the site has been upgraded to use <a href="http://metacpan.org/release/BRICAS/CPAN-Changes-0.09/">CPAN::Changes 0.09</a>, which includes more lenient date parsing code. Although timestamps (a la <code>scalar localtime</code>) are parsed, everyone is encouraged to use W3CDTF dates and the existing tools will continue to only spit out dates in that format.</p>
+
+<h3>[2011-03-22] Feeds and other updates</h3>
+<p>A number of site improvements have landed (thanks in part to <a href="https://github.com/hobbestigrou">hobbestigrou</a>!). This includes basic search functionality and iprovements to the dist and author listsings. Furthermore, we now have atom feeds for recent distributions, plus feeds for any given distribution or author.</p>
+<p>The next task will be to lay the framework for updating the content on this site at regular and more frequent intervals. </p>
+
+<h3>[2011-03-15] Site Launched</h3>
+<p>Everything is still very much in <i>beta</i> mode, but the site is live and working!</p>
+<% END %>

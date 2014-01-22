@@ -1,4 +1,7 @@
-<h2><a href="<% dist_uri %>/<% params.dist %>"><% params.dist %></a> <% release.version %> (<a href="<% author_uri %>/<% release.author %>"><% release.author %></a>)</h2>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <h2><span class="glyphicon glyphicon-file"></span> <a href="<% dist_uri %>/<% params.dist %>"><% params.dist %></a> <% release.version %> (<a href="<% author_uri %>/<% release.author %>"><% release.author %></a>)</h2>
 <p><strong>Abstract:</strong> <% release.abstract | html %></p>
 <p><strong>Links:</strong> <a href="http://metacpan.org/release/<% release.author %>/<% params.dist %>-<% params.version %>">metacpan</a>, <a href="http://search.cpan.org/dist/<% params.dist %>-<% params.version %>">search.cpan</a></p>
 <% IF release.failure %>
@@ -23,4 +26,6 @@
 </pre>
 <p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
 <% END %>
-
+        </div>
+    </div>
+</div>
