@@ -292,6 +292,7 @@ post '/validate' => sub {
     return redirect '/validate' unless $fulltext;
 
     var title => 'Validation Results';
+    my %vars = ( original => $fulltext );
 
     my $changes = try {
         local $SIG{ __WARN__ } = sub { };    # ignore warnings
@@ -299,7 +300,7 @@ post '/validate' => sub {
     }
     catch {
         return template( 'validate/result',
-            { failure => "Parse error: $_", } );
+            { %vars, failure => "Parse error: $_", } );
     };
 
     return $changes unless ref $changes;
@@ -309,7 +310,7 @@ post '/validate' => sub {
 
     if ( !$latest ) {
         return template( 'validate/result',
-            { failure => 'No releases found in "Changes" file' } );
+            { %vars, failure => 'No releases found in "Changes" file' } );
     }
 
     # Check all dates
@@ -317,7 +318,7 @@ post '/validate' => sub {
         if ( !$_ or $_ !~ m{^${CPAN::Changes::W3CDTF_REGEX}\s*$} ) {
             return template(
                 'validate/result',
-                {   failure => sprintf
+                {   %vars, failure => sprintf
                         'Changelog release date (%s) does not look like a W3CDTF',
                     $_ || ''
                 }
@@ -328,7 +329,7 @@ post '/validate' => sub {
     my $reformatted = $changes->serialize;
     template(
         'validate/result',
-        {   original    => $fulltext,
+        {   %vars, 
             reformatted => $reformatted,
             diff        => Text::Diff::diff( \$fulltext, \$reformatted )
         }

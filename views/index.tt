@@ -7,18 +7,6 @@
               <li class="list-group-item"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% request.base %>author/<% release.author %>"><% release.author %></a></li>
 <% END %>
             </ul>
-<!--
-            <table class="table table-bordered">
-                <tr><td></td><th>Distribution</th><th>Author</th></tr>
-<% WHILE( release = recent_releases.next ) %>
-                <tr>
-                    <td><% release.status_text | upper %></td>
-                    <td><a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a></td>
-                    <td><a href="<% request.base %>author/<% release.author %>"><% release.author %></a></td>
-                </tr>
-<% END %>
-            </table>
--->
         </div>
         <div class="col-xs-4">
             <h2><span class="glyphicon glyphicon-dashboard"></span> Status</h2>

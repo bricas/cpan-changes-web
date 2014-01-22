@@ -1,19 +1,52 @@
-<h2>Validation Results</h2>
-<div id=validation>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+<h2><span class="glyphicon glyphicon-cog"></span> Validation Results</h2>
+
 <% IF failure %>
-<p class=error>&#10007; ERROR: <% failure %></p>
+<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span> <strong>ERROR:</strong> <% failure %></div>
+
+<form method=post id=validator role=form>
+<div class="form-group">
+    <textarea class="form-control" rows="15" name=c><% original %></textarea>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-default">Submit</button>
+</div>
+</form>
+
 <% ELSE %>
-<p class=success>&#10003; Congratulations, no errors were found!</p>
-<p><strong>Show:</strong> <a href="#" id=showreformatted>Reformatted</a>, <a href="#" id=showoriginal>Original</a>, <a href="#" id=showdiff>Diff</a></p>
-<pre class=result id=reformatted>
+
+<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> <strong>Congratulations,</strong> no errors were found!</div>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#reformatted" data-toggle="tab">Reformatted</a></li>
+  <li><a href="#original" data-toggle="tab">Original</a></li>
+  <li><a href="#diff" data-toggle="tab">Diff</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="reformatted">
+<pre>
 <% reformatted | html -%>
 </pre>
-<pre class=result id=original>
+  </div>
+  <div class="tab-pane" id="original">
+<pre>
 <% original | html -%>
 </pre>
-<pre class=result id=diff>
+  </div>
+  <div class="tab-pane" id="diff">
+<pre>
 <% diff | html -%>
 </pre>
+  </div>
+</div>
+
 <p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
+
 <% END %>
+
+        </div>
+    </div>
 </div>

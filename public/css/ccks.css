@@ -1,0 +1,54 @@
+.navbar-brand > span {
+    color: #fff;
+    background-color: #999;
+    border-radius: 12px;
+    padding: 2px 7px;
+    font-weight: bold;
+}
+
+.navbar-brand .glyphicon-ok, tr.progress .glyphicon-ok, .list-group .glyphicon-ok {
+    color: palegreen;
+}
+
+.list-group .glyphicon-remove {
+    color: darkred;
+}
+
+tr.progress th, tr.progress td {
+    color: #fff;
+    background-color: #999;
+    font-weight: bold;
+}
+
+.navbar-form button {
+    margin-left: 6px;
+}
+
+.multicol {
+    -moz-column-width: 250px;
+    -webkit-column-width: 250px;
+    -moz-column-gap: 20px;
+    -webkit-column-gap: 20px;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+}
+
+ul.multicol {
+    list-style-type: none;
+    margin-bottom: 0;
+}
+
+.multicol li {
+    margin-bottom: 2px;
+    padding-bottom: 2px;
+}
+
+.panel-heading h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+form#validator textarea {
+    font-family: monospace;
+}
+

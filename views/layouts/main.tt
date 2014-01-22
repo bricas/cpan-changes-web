@@ -6,61 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="<% request.base %>css/bootstrap.min.css" rel="stylesheet">
     <link href="<% request.base %>css/sticky-footer-navbar.css" rel="stylesheet">
-    <style type="text/css">
-.navbar-brand > span {
-    color: #fff;
-    background-color: #999;
-    border-radius: 12px;
-    padding: 2px 7px;
-    font-weight: bold;
-}
-
-.navbar-brand .glyphicon-ok, tr.progress .glyphicon-ok, #recent .glyphicon-ok {
-    color: palegreen;
-}
-
-#recent .glyphicon-remove {
-    color: darkred;
-}
-
-tr.progress th, tr.progress td {
-    color: #fff;
-    background-color: #999;
-    font-weight: bold;
-}
-
-.navbar-form button {
-    margin-left: 6px;
-}
-
-.multicol {
-    -moz-column-width: 250px;
-    -webkit-column-width: 250px;
-    -moz-column-gap: 20px;
-    -webkit-column-gap: 20px;
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-}
-
-ul.multicol {
-    list-style-type: none;
-    margin-bottom: 0;
-}
-
-.multicol li {
-    margin-bottom: 2px;
-    padding-bottom: 2px;
-}
-
-.panel-heading h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-}
-
-form#validator textarea {
-    font-family: monospace;
-}
-    </style>
+    <link href="<% request.base %>css/ccks.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
@@ -115,7 +61,7 @@ form#validator textarea {
 </div>
 
     <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="<% request.base %>js/bootstrap.min.js"></script>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-41027231-1']);

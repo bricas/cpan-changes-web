@@ -5,7 +5,7 @@
 <p><strong>Abstract:</strong> <% release.abstract | html %></p>
 <p><strong>Links:</strong> <a href="http://metacpan.org/release/<% release.author %>/<% params.dist %>-<% params.version %>">metacpan</a>, <a href="http://search.cpan.org/dist/<% params.dist %>-<% params.version %>">search.cpan</a></p>
 <% IF release.failure %>
-<p class=error>ERROR: <% release.failure %></p>
+<div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span> <strong>ERROR:</strong> <% release.failure %></div>
 <% IF release.changes_fulltext %>
 <p>Here's what we tried to parse:</p>
 <pre class=result>
@@ -13,17 +13,32 @@
 </pre>
 <% END %>
 <% ELSE %>
-<p class=success>Congratulations, no errors were found!</p>
-<p><strong>Show:</strong> <a href="#" id=showreformatted>Reformatted</a>, <a href="#" id=showoriginal>Original</a>, <a href="#" id=showdiff>Diff</a></p>
-<pre class=result id=reformatted>
+<div class="alert alert-success"><span class="glyphicon glyphicon-ok"></span> <strong>Congratulations,</strong> no errors were found!</div>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#reformatted" data-toggle="tab">Reformatted</a></li>
+  <li><a href="#original" data-toggle="tab">Original</a></li>
+  <li><a href="#diff" data-toggle="tab">Diff</a></li>
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="reformatted">
+<pre>
 <% reformatted | html -%>
 </pre>
-<pre class=result id=original>
+  </div>
+  <div class="tab-pane" id="original">
+<pre>
 <% release.changes_fulltext | html -%>
 </pre>
-<pre class=result id=diff>
+  </div>
+  <div class="tab-pane" id="diff">
+<pre>
 <% diff | html -%>
 </pre>
+  </div>
+</div>
+
 <p>If you think the output above is in any way incorrect, please <a href="mailto:bricas@cpan.org">send us your feedback</a>.</p>
 <% END %>
         </div>

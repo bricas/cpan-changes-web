@@ -3,13 +3,41 @@
         <div class="col-xs-8">
             <h2><span class="glyphicon glyphicon-user"></span> <% author_info.name %> (<a href="<% request.base %>author/<% params.id %>/feed">feed</a>)</h2>
 <p><strong>Links:</strong> <a href="http://metacpan.org/author/<% params.id %>">metacpan</a>, <a href="http://search.cpan.org/~<% params.id %>">search.cpan</a></p>
-<p><strong>Show:</strong> <a href="#" id=showall>All</a>, <a href="#" id=showpass>Passes</a>, <a href="#" id=showfail>Fails</a>
-<ul id=releases>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#all" data-toggle="tab">All</a></li>
+              <li><a href="#pass" data-toggle="tab">Pass</a></li>
+              <li><a href="#fail" data-toggle="tab">Fail</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="all">
+                <ul class="list-group">
 <% WHILE( release = dists.next ) %>
-    <li class=<% release.status_text  %>><span class=status>[<% release.status_text | upper %>]</span> <a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %>/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
 <% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
 <% END %>
-</ul>
+                </ul>
+                </div>
+                <div class="tab-pane" id="pass">
+                <ul class="list-group">
+<% CALL dists.reset %>
+<% WHILE( release = dists.next ) %>
+<% NEXT IF release.status_text != 'pass' %>
+              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %> /<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+<% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
+<% END %>
+                </ul>
+                </div>
+                <div class="tab-pane" id="fail">
+                <ul class="list-group">
+<% CALL dists.reset %>
+<% WHILE( release = dists.next ) %>
+<% NEXT IF release.status_text != 'fail' %>
+              <li class="list-group-item <% release.status_text %>"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% dist_uri %> /<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a>
+<% IF release.failure %><br><span class=error><% release.failure %></span><% END %></li>
+<% END %>
+                </ul>
+                </div>
+            </div>
         </div>
         <div class="col-xs-4">
             <h3><span class="glyphicon glyphicon-dashboard"></span> Status</h3>
