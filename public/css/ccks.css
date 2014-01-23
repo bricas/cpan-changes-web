@@ -24,6 +24,11 @@ tr.progress th, tr.progress td {
     margin-left: 6px;
 }
 
+#recent .date {
+    background: #e7e7e7;
+    font-weight: bold;
+}
+
 .multicol {
     -moz-column-width: 250px;
     -webkit-column-width: 250px;

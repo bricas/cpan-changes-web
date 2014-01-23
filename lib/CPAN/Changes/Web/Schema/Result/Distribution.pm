@@ -101,6 +101,11 @@ sub status_icon {
     return $self->failure ? 'remove' : 'ok';
 }
 
+sub release_ymd {
+    my $self = shift;
+    $self->dist_timestamp->ymd;
+}
+
 sub as_changes_obj {
     return CPAN::Changes->load_string( shift->changes_fulltext );
 }

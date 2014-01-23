@@ -3,10 +3,26 @@
         <div class="col-xs-8">
             <h2><span class="glyphicon glyphicon-time"></span> Recent Releases (<a href="<% request.base %>recent/feed">feed</a>)</h2>
             <ul id="recent" class="list-group">
+<% SET last_date = '' %>
 <% WHILE( release = recent_releases.next ) %>
+    <% IF last_date != release.release_ymd %>
+    <% last_date = release.release_ymd %>
+              <li class="list-group-item date"><% last_date %></li>
+    <% END %>
               <li class="list-group-item"><span class="badge pull-left"><span class="glyphicon glyphicon-<% release.status_icon %>"></span></span>&nbsp;<a href="<% request.base %>dist/<% release.distribution %>/<% release.version %>"><% release.distribution %> <% release.version %></a> by <a href="<% request.base %>author/<% release.author %>"><% release.author %></a></li>
 <% END %>
             </ul>
+
+<h2>What is the CPAN::Changes Kwalitee Service?</h2>
+<p>The CPAN::Changes Kwalitee Service was created primarily to help CPAN authors gauge their changelog file compliance against the <a href="http://metacpan.org/module/CPAN::Changes::Spec">latest specification</a>.</p>
+<p>It is hoped that this will encourage <a href="<% author_uri %>">authors</a> to update their <a href="<% dist_uri %>">distributions</a> which will allow applications in the CPAN ecosystem to reliably interpret these files.</p>
+<h2>Tell me more.</h2>
+<p>CPAN distributions are generally expected to have a changelog. An overwhelming majority of authors use <code>Changes</code> as the filename (<a href="http://blog.alternation.net/re-changes-filenames">source</a>), however the contents of the file seems to vary more significantly.</p>
+<p>A lot of the things we do when packaging perl modules are the result of common convention that has become standard. With this in mind, <a href="http://metacpan.org/module/CPAN::Changes::Spec">a specification</a> for writing changelog files has been created from examining existing files and codifying their common elements. Furthermore, a <a href="http://metacpan.org/module/Test::CPAN::Changes">test module</a> has been created to aid in release testing your changelog.</p>
+<p>See the main <a href="http://metacpan.org/module/CPAN::Changes">CPAN::Changes documentation</a> for an API to read and write Changes files.</p>
+<h2>How can I contribute?</h2>
+<p>Any comments, questions, complaints, patches or even just ideas can be emailed to: <a href="mailto:bricas@cpan.org">bricas@cpan.org</a>. If you would like to play with the source code for the project, everything is hosted on <a href="https://github.com/bricas/cpan-changes-web">github</a>.</p>
+
         </div>
         <div class="col-xs-4">
             <h2><span class="glyphicon glyphicon-dashboard"></span> Status</h2>
@@ -22,17 +38,4 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-8">
-<h2>What is the CPAN::Changes Kwalitee Service?</h2>
-<p>The CPAN::Changes Kwalitee Service was created primarily to help CPAN authors gauge their changelog file compliance against the <a href="http://metacpan.org/module/CPAN::Changes::Spec">latest specification</a>.</p>
-<p>It is hoped that this will encourage <a href="<% author_uri %>">authors</a> to update their <a href="<% dist_uri %>">distributions</a> which will allow applications in the CPAN ecosystem to reliably interpret these files.</p>
-<h2>Tell me more.</h2>
-<p>CPAN distributions are generally expected to have a changelog. An overwhelming majority of authors use <code>Changes</code> as the filename (<a href="http://blog.alternation.net/re-changes-filenames">source</a>), however the contents of the file seems to vary more significantly.</p>
-<p>A lot of the things we do when packaging perl modules are the result of common convention that has become standard. With this in mind, <a href="http://metacpan.org/module/CPAN::Changes::Spec">a specification</a> for writing changelog files has been created from examining existing files and codifying their common elements. Furthermore, a <a href="http://metacpan.org/module/Test::CPAN::Changes">test module</a> has been created to aid in release testing your changelog.</p>
-<p>See the main <a href="http://metacpan.org/module/CPAN::Changes">CPAN::Changes documentation</a> for an API to read and write Changes files.</p>
-<h2>How can I contribute?</h2>
-<p>Any comments, questions, complaints, patches or even just ideas can be emailed to: <a href="mailto:bricas@cpan.org">bricas@cpan.org</a>. If you would like to play with the source code for the project, everything is hosted on <a href="https://github.com/bricas/cpan-changes-web">github</a>.</p>
-        </div>
-    </div>
 </div>
