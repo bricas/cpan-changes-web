@@ -1,7 +1,7 @@
 Quick-and-dirty guide to running the CPAN::Changes Kwalitee Service app:
 
 1. cpanm --installdeps .
-2. minicpan
+2. minicpan -c CPAN::Mini::LatestDistVersion
 3. ./bin/deploy.pl
 4. ./bin/indexer.pl -m /path/to/minicpan
 5. ./bin/authors.pl -m /path/to/minicpan
