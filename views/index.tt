@@ -1,6 +1,6 @@
 <div class="container">
     <div class="row">
-        <div class="col-xs-8">
+        <div class="col-sm-8">
             <h2><span class="glyphicon glyphicon-time"></span> Recent Releases (<a href="<% request.base %>recent/feed">feed</a>)</h2>
             <ul id="recent" class="list-group">
 <% SET last_date = '' %>
@@ -24,7 +24,7 @@
 <p>Any comments, questions, complaints, patches or even just ideas can be emailed to: <a href="mailto:bricas@cpan.org">bricas@cpan.org</a>. If you would like to play with the source code for the project, everything is hosted on <a href="https://github.com/bricas/cpan-changes-web">github</a>.</p>
 
         </div>
-        <div class="col-xs-4">
+        <div class="col-sm-4">
             <h2><span class="glyphicon glyphicon-dashboard"></span> Status</h2>
             <table class="table table-bordered">
                 <tr><th><a href="<% author_uri %>">Authors</a></th><td><% authors %></td></tr>
